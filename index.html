@@ -76,18 +76,32 @@
     .ex .exn { font-style: normal; color: #3f8ac9; margin-right: 10px; }
     .ex b { color: #d6d8db; font-weight: 500; margin-right: 7px; }
     .ex .usd { font-style: normal; color: #8e929b; font-size: 12px; }
+    /* 업비트 트레이딩뷰 상단 도구줄: 높이 38, 글자 14px, 버튼 사이 구분선 1px, 마우스를 올리면 회색 상자 */
     .topbar {
-      flex: 0 0 38px; height: 38px; display: flex; align-items: center; gap: 2px;
-      padding: 0 8px 0 10px; background: #0d192a; font-size: 13px; color: #8e929b;
+      position: relative; flex: 0 0 38px; height: 38px; display: flex; align-items: stretch; gap: 0;
+      padding: 0 8px 0 0; background: #0c1a2c; color: #d6d8db;
+      font: 14px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif;
     }
-    .topbar .tf { background: none; border: 0; color: #8e929b; padding: 4px 8px; cursor: pointer; border-radius: 4px; }
-    .topbar .tf.on { background: #1a2434; color: #fff; }
-    .topbar .caret { color: #565d6a; margin-right: 6px; font-size: 10px; }
-    .topbar .htools { display: flex; align-items: center; margin-left: 4px; color: #8e929b; }
-    .topbar .htools .hi { width: 32px; height: 28px; display: grid; place-items: center; }
-    .topbar .htools svg, .sidebar .ico svg, .chart-gear svg { stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-    .topbar .htools svg { width: 18px; height: 18px; }
+    .topbar button { display: block; height: 38px; margin: 0; padding: 2px 3px 3px; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+    .topbar button > span { display: flex; align-items: center; justify-content: center; height: 33px; padding: 0 3px; border-radius: 4px; white-space: nowrap; }
+    .topbar button:hover > span { background: #3d3d3d; }
+    .topbar .tf.on, .topbar .tf-more.on { color: #0062df; }
+    .topbar .tf-more { width: 24px; }
+    .topbar .tf-more svg { width: 8px; height: 4px; }
+    .topbar .tsep { flex: 0 0 1px; background: #152031; }
+    .topbar .tsep.ov { margin-right: -1px; position: relative; z-index: 1; }
+    .topbar .ticon { width: 38px; }
+    .topbar .ticon svg { width: 28px; height: 28px; }
+    .topbar .tind { width: 73px; }
+    .topbar .tind > span { gap: 0; padding-right: 7px; }
+    .topbar .tind svg { width: 28px; height: 28px; flex: 0 0 28px; }
+    .topbar svg, .sidebar .ico svg, .chart-gear svg { stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+    .topbar .ticon svg, .topbar .tind svg { stroke-width: 1; }
     .topbar .sp { flex: 1; }
+    .tf-menu { position: absolute; left: 0; top: 38px; z-index: 20; display: none; min-width: 150px; padding: 6px 0; background: #131e2e; border: 1px solid #2a3442; border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, .5); }
+    .tf-menu.open { display: block; }
+    .tf-menu .tf { width: 100%; height: 32px; padding: 0; text-align: left; }
+    .tf-menu .tf > span { justify-content: flex-start; height: 32px; padding: 0 16px; border-radius: 0; }
     .rad { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; color: #d6d8db; }
     .rad i { width: 14px; height: 14px; border: 1.5px solid #565d6a; border-radius: 50%; display: inline-block; }
     .rad.on i { border-color: #fff; background: radial-gradient(circle, #fff 0 3px, transparent 4px); }
@@ -288,20 +302,38 @@
           <div class="ex-view"><div class="ex-track" id="exTrack"></div></div>
         </div>
         <div class="topbar">
-          <button class="tf" data-unit="minutes/60">1시간</button>
-          <button class="tf" data-unit="minutes/240">4시간</button>
-          <button class="tf on" data-unit="days">일</button>
-          <button class="tf" data-unit="weeks">주</button>
-          <button class="tf" data-unit="months">달</button>
-          <span class="caret">▾</span>
-          <div class="htools">
-            <span class="hi" title="봉"><svg viewBox="0 0 24 24"><path d="M7 4v6M7 14v6M17 4v4M17 12v8M5 10h4M15 8h4"/></svg></span>
-            <span class="hi" title="지표"><svg viewBox="0 0 24 24"><path d="M4 17l4-6 3 3 4-6 4 4"/></svg></span>
-            <span class="hi" title="비교"><svg viewBox="0 0 24 24"><path d="M13 3L6 13h5l-1 8 8-12h-5z"/></svg></span>
-            <span class="hi" title="도형"><svg viewBox="0 0 24 24"><path d="M12 4l2.2 3.2H18l-2 3.2 2 3.2h-3.8L12 17l-2.2-3.4H6l2-3.2-2-3.2h3.8z"/></svg></span>
-            <span class="hi" title="전체화면"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span>
-            <span class="hi" title="스냅샷"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3"/></svg></span>
+          <button class="tf" data-unit="seconds" title="1 초"><span>1초</span></button>
+          <button class="tf" data-unit="minutes/1" title="1 분"><span>1분</span></button>
+          <button class="tf" data-unit="minutes/30" title="30 분"><span>30분</span></button>
+          <button class="tf" data-unit="minutes/60" title="1 시간"><span>1시간</span></button>
+          <button class="tf" data-unit="minutes/240" title="4 시간"><span>4시간</span></button>
+          <button class="tf on" data-unit="days" title="1 일"><span>일</span></button>
+          <button class="tf" data-unit="years" title="12 달"><span>12달</span></button>
+          <button class="tf-more" id="tfMore" title="차트 간격"><span><svg viewBox="0 0 8 4"><path d="M.5.5L4 3.5 7.5.5"/></svg></span></button>
+          <div class="tf-menu" id="tfMenu">
+            <button class="tf" data-unit="seconds"><span>1초</span></button>
+            <button class="tf" data-unit="minutes/1"><span>1분</span></button>
+            <button class="tf" data-unit="minutes/3"><span>3분</span></button>
+            <button class="tf" data-unit="minutes/5"><span>5분</span></button>
+            <button class="tf" data-unit="minutes/10"><span>10분</span></button>
+            <button class="tf" data-unit="minutes/15"><span>15분</span></button>
+            <button class="tf" data-unit="minutes/30"><span>30분</span></button>
+            <button class="tf" data-unit="minutes/60"><span>1시간</span></button>
+            <button class="tf" data-unit="minutes/240"><span>4시간</span></button>
+            <button class="tf on" data-unit="days"><span>일</span></button>
+            <button class="tf" data-unit="weeks"><span>주</span></button>
+            <button class="tf" data-unit="months"><span>달</span></button>
+            <button class="tf" data-unit="years"><span>12달</span></button>
           </div>
+          <span class="tsep ov"></span>
+          <button class="ticon" title="캔들"><span><svg viewBox="0 0 28 28"><path d="M10.5 6.5v4M10.5 19.5v3M17.5 5.5v3M17.5 17.5v4"/><rect x="8.5" y="10.5" width="4" height="9" rx=".5"/><rect x="15.5" y="8.5" width="4" height="9" rx=".5"/></svg></span></button>
+          <span class="tsep"></span>
+          <button class="tind" title="지표 및 전략"><span><svg viewBox="0 0 28 28"><path d="M15 6.5c-1.5-.5-2.9.2-3.2 1.8L9.6 20.7c-.3 1.6-1.7 2.3-3.2 1.8M9 11.5h5.5"/><path d="M16.5 15.5l5 6M21.5 15.5l-5 6"/></svg>지표</span></button>
+          <span class="tsep ov"></span>
+          <button class="ticon" title="퀵 서치"><span><svg viewBox="0 0 28 28"><circle cx="12.5" cy="12.5" r="6.5"/><path d="M17.2 17.2l5.3 5.3M13.5 8.5l-2.7 4.3h3.4l-2.7 4.3"/></svg></span></button>
+          <button class="ticon" title="설정"><span><svg viewBox="0 0 28 28"><path d="M9.3 5.5h9.4l4.8 8.5-4.8 8.5H9.3L4.5 14z"/><circle cx="14" cy="14" r="3"/></svg></span></button>
+          <button class="ticon" title="전체화면모드"><span><svg viewBox="0 0 28 28"><path d="M6.5 11V6.5H11M17 6.5h4.5V11M21.5 17v4.5H17M11 21.5H6.5V17"/></svg></span></button>
+          <button class="ticon" title="스냅샷 찍기"><span><svg viewBox="0 0 28 28"><path d="M5.5 10.3c0-1 .8-1.8 1.8-1.8h2.6l1.7-2.3h4.8l1.7 2.3h2.6c1 0 1.8.8 1.8 1.8v9.4c0 1-.8 1.8-1.8 1.8H7.3c-1 0-1.8-.8-1.8-1.8z"/><circle cx="14" cy="15" r="3.8"/></svg></span></button>
           <span class="sp"></span>
           <span class="rad"><i></i>기본차트</span>
           <span class="rad on"><i></i>트레이딩뷰</span>
@@ -550,8 +582,18 @@ function volFmt(v) {
   return (v / suf[0]).toFixed(2) + suf[1];
 }
 function unitLabel() {
-  return { "minutes/60": "1시간", "minutes/240": "4시간", days: "1일", weeks: "1주", months: "1달" }[unit];
+  if (unit === "seconds") return "1초";
+  const mins = unitMinutes();
+  if (unit.startsWith("minutes/")) return mins >= 60 ? mins / 60 + "시간" : mins + "분";
+  return { days: "1일", weeks: "1주", months: "1달", years: "12달" }[unit];
 }
+// 봉 하나의 길이(분). 초봉은 1/60분.
+function unitMinutes() {
+  if (unit === "seconds") return 1 / 60;
+  if (unit.startsWith("minutes/")) return +unit.split("/")[1];
+  return { days: 1440, weeks: 10080, months: 43800, years: 525600 }[unit] || 1440;
+}
+const isIntraday = () => unitMinutes() < 1440;
 
 function marketCode(raw) {
   let s = String(raw || "").trim().toUpperCase().replace(/\s+/g, "");
@@ -677,8 +719,12 @@ function kstParts(ms) {
 function periodStart(ms) {
   const s = kstParts(ms);
   const midnight = Date.UTC(s.y, s.m, s.d) - 9 * 3600000;
-  if (unit === "minutes/60") return midnight + s.H * 3600000;
-  if (unit === "minutes/240") return midnight + Math.floor(s.H / 4) * 4 * 3600000;
+  if (unit === "seconds") return ms - ms % 1000;
+  if (unit.startsWith("minutes/")) {
+    const n = unitMinutes();
+    return midnight + Math.floor((s.H * 60 + s.M) / n) * n * 60000;
+  }
+  if (unit === "years") return Date.UTC(s.y, 0, 1) - 9 * 3600000;
   if (unit === "weeks") {
     const wd = new Date(ms + 9 * 3600000).getUTCDay();
     return midnight - ((wd + 6) % 7) * 86400000;
@@ -809,11 +855,20 @@ function nicePriceStep(range, px) {
   return m * pow;
 }
 function daysPerCandle() {
-  if (unit === "minutes/60") return 1 / 24;
-  if (unit === "minutes/240") return 1 / 6;
-  if (unit === "weeks") return 7;
   if (unit === "months") return 30;
-  return 1;
+  if (unit === "years") return 365;
+  return unitMinutes() / 1440;
+}
+// 하루보다 짧은 봉(초·분·시간): 날짜 대신 시각 눈금. 눈금 사이가 78px 이상 되는 가장 작은 간격을 고른다.
+const TIME_STEPS = [1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 7200, 10800, 21600, 43200, 86400].map(s => s * 1000);
+function timeStepMs(slot) {
+  const msPerPx = unitMinutes() * 60000 / Math.max(slot, 0.01);
+  return TIME_STEPS.find(s => s / msPerPx >= 78) || 86400000;
+}
+function intradayLabel(ts, stepMs) {
+  const p = kstParts(ts);
+  if (p.H === 0 && p.M === 0 && p.S === 0) return p.d === 1 ? (p.m + 1) + "월" : String(p.d);
+  return stepMs < 60000 ? p.time : p.time.slice(0, 5);
 }
 function dayStep(pxPerDay) {
   const want = 78 / Math.max(pxPerDay, 0.4);
@@ -942,7 +997,20 @@ function draw() {
     if (!anchor) return null;
     return kstShift(anchor.kst, (i - (axis.length - 1)) * daysPerCandle());
   };
+  const intraday = isIntraday();
+  const stepMs = intraday ? timeStepMs(slot) : 0;
+  const unitMs = unitMinutes() * 60000;
+  let prevBucket = null;
   for (let i = iFrom; i < iTo; i++) {
+    if (intraday) {
+      // 거래가 없던 구간은 봉이 비므로, 시각 구간이 바뀌는 첫 봉에 눈금을 단다.
+      const ts = i >= 0 && i < axis.length ? axis[i].ts : anchor ? anchor.ts + (i - (axis.length - 1)) * unitMs : null;
+      if (ts == null) continue;
+      const bucket = Math.floor((ts + 9 * 3600000) / stepMs);
+      if (prevBucket !== null && bucket !== prevBucket) xLines.push({ i, kst: kstParts(ts).date, ts });
+      prevBucket = bucket;
+      continue;
+    }
     const kst = kstOf(i);
     if (kst && isTick(kst, stepDays)) xLines.push({ i, kst });
   }
@@ -1009,7 +1077,8 @@ function draw() {
     const month = t.kst.slice(0, 7);
     const head = month !== prevMonth;
     prevMonth = month;
-    ctx.fillText(timeLabel(t.kst, stepDays, head), barBox(t.i).mid, h - padB / 2 + 4);
+    const label = t.ts != null ? intradayLabel(t.ts - (t.ts + 9 * 3600000) % stepMs, stepMs) : timeLabel(t.kst, stepDays, head);
+    ctx.fillText(label, barBox(t.i).mid, h - padB / 2 + 4);
   });
 
   if (pointer && !drag) {
@@ -1397,13 +1466,18 @@ document.querySelector(".inforTab").onclick = e => {
   const t = e.target.closest("span"); if (!t) return;
   document.querySelectorAll(".inforTab span").forEach(x => x.classList.toggle("on", x === t));
 };
+// ⌄ 버튼: 모든 차트 간격 목록. 즐겨찾기 줄에 없는 간격이 선택되면 ⌄ 버튼이 파랗게 된다.
+$("tfMore").onclick = e => { e.stopPropagation(); $("tfMenu").classList.toggle("open"); };
+document.addEventListener("click", e => { if (!e.target.closest("#tfMenu")) $("tfMenu").classList.remove("open"); });
 document.querySelector(".topbar").onclick = async e => {
   const b = e.target.closest(".tf"); if (!b) return;
+  $("tfMenu").classList.remove("open");
   stopReplay();
   replayHold = false;
   replaySim = null;
-  document.querySelectorAll(".tf").forEach(x=>x.classList.toggle("on", x===b));
   unit = b.dataset.unit;
+  document.querySelectorAll(".tf").forEach(x => x.classList.toggle("on", x.dataset.unit === unit));
+  $("tfMore").classList.toggle("on", !document.querySelector(".topbar > .tf.on"));
   await fetchAll(); applyDate();
 };
 function tick(){ if (playing || replayHold) return; $("clock").textContent = new Date().toTimeString().slice(0,8) + " UTC+9"; }
@@ -2032,8 +2106,7 @@ function simBase() {
     return v / minuteBars.length;
   }
   const last = view[view.length - 1];
-  const mins = { "minutes/60": 60, "minutes/240": 240, days: 1440, weeks: 10080, months: 43800 }[unit] || 1440;
-  return last ? last.volume / mins : 1;
+  return last ? last.volume / unitMinutes() : 1;
 }
 function simSize(base) {
   const r = Math.random();
