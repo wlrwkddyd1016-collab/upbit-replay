@@ -39,7 +39,7 @@
     .titB strong { display: block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 20px; color: #d2d4d6; cursor: pointer; font-family: Roboto, "Noto Sans KR", Dotum, "돋움", sans-serif, Arial, Helvetica; font-size: 20px; font-weight: 700; font-style: normal; line-height: 20px; white-space: nowrap; }
     .titB p { display: block; box-sizing: content-box; margin: 0 4px; padding: 0; border: 0; height: 14.72px; color: #d2d4d6; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; font-style: normal; line-height: normal; white-space: nowrap; }
     .titB .arrow { box-sizing: content-box; display: block; width: 13px; height: 44px; margin: 0; padding: 0 8px; overflow: hidden; border: 0; color: #333; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; line-height: normal; text-indent: -11988px; text-decoration: none; vertical-align: top; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DSlPD5Zf.png) no-repeat 50% 20px; }
-    .inforTab { flex: 1; display: flex; align-items: flex-end; justify-content: center; height: 52px; }
+    .inforTab { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; height: 52px; }
     .inforTab span { display: block; box-sizing: border-box; width: 140px; height: 45px; margin: 0; padding: 0; border: 0; line-height: 45px; text-align: center; white-space: nowrap; cursor: pointer; text-decoration: none; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 700; color: #d2d4d6; }
     .inforTab .on { color: #0062df; border-bottom: 2.56px solid #0062df; }
     .gear { box-sizing: border-box; position: relative; display: block; align-self: flex-end; width: 44px; height: 44px; margin: 0; padding: 0; overflow: hidden; border: 0; border-left: 1px solid #1e2939; color: #333; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; line-height: normal; text-indent: -119988px; text-decoration: none; vertical-align: top; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DLbiqYLm.svg) no-repeat center; }
@@ -1251,6 +1251,10 @@ $("play").onclick = async () => {
     }
     paintReplay();
   }, 200);
+};
+document.querySelector(".inforTab").onclick = e => {
+  const t = e.target.closest("span"); if (!t) return;
+  document.querySelectorAll(".inforTab span").forEach(x => x.classList.toggle("on", x === t));
 };
 document.querySelector(".topbar").onclick = async e => {
   const b = e.target.closest(".tf"); if (!b) return;
