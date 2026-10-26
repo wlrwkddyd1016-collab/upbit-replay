@@ -158,7 +158,9 @@
     .mkts-head { width: 100%; height: 30px; margin: 0; background: #141a24; color: #858b95; font-size: 11px; }
     .mkts-head span { cursor: pointer; text-align: right; }
     .mkts-head span[data-k="name"], .mrow .nm { text-align: left; }
-    .mkts-list { flex: 1; overflow: auto; min-height: 0; width: 100%; margin: 0; padding: 0; color: #d2d4d6; }
+    .mkts-list { flex: 1; overflow: auto; min-height: 0; width: 100%; margin: 0; padding: 0; color: #d2d4d6; scrollbar-width: none; }
+    /* 업비트처럼 스크롤바는 숨기고 마우스 휠 스크롤은 그대로 */
+    .mkts-list::-webkit-scrollbar { display: none; }
     .mrow { height: 45px; border-top: 1px solid #1a2434; cursor: pointer; font-size: 12px; }
     .mrow:hover, .mrow.on { background: #0d192a; }
     .mrow .nm strong { font-weight: 700; color: #d6d8db; }
