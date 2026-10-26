@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>XRP/KRW · UPBIT</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" />
+  <style>
+    :root {
+      --theme-font: 'Roboto','Noto Sans KR','Droid Sans',AppleSDGothicNeo-Regular,'Malgun Gothic',Dotum,sans-serif;
+      --theme-colors-bg: #05111e;
+      --theme-colors-bg_header: #0d192a;
+      --theme-colors-bg_list: #0c1727;
+      --theme-colors-bg_list_hover: #0d192a;
+      --theme-colors-font_1: #d6d8db;
+      --theme-colors-font_2: #8e929b;
+      --theme-colors-line_1: #1a2434;
+      --theme-colors-accent_main: #0062df;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #000; color: #d2d4d6;
+      font-family: var(--theme-font); font-size: 100%; }
+    .app { width: 100%; margin: 0; padding: 0; border: 0; color: #d2d4d6; height: 100dvh; max-height: 100dvh; overflow: hidden; display: flex; flex-direction: column; background: #000; }
+    .replaybar {
+      flex: 0 0 auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+      padding: 8px 12px; background: #0d192a; border-bottom: 1px solid #000; font-size: 12px;
+    }
+    .replaybar input, .replaybar button, .replaybar select {
+      background: #05111e; color: #d6d8db; border: 1px solid #313b4b;
+      border-radius: 4px; padding: 5px 8px; font-size: 12px;
+    }
+    .replaybar button.go { background: #0062df; border-color: #0062df; color: #fff; font-weight: 700; }
+    .stage { flex: 1; display: flex; gap: 6px; min-width: 0; min-height: 0; background: #000; padding: 6px; }
+    .trade { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; min-height: 0; background: transparent; }
+    .upbit-head { flex: 0 0 auto; padding: 0; background: #05111e; border: 0; }
+    .titB { width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 0; margin: 0; padding: 0; border: 0; border-bottom: 1px solid #1a2434; color: #d2d4d6; min-height: 52px; }
+    .titB .select { display: flex; align-items: center; margin: 0; padding: 0 0 0 16px; color: inherit; text-decoration: none; min-width: 0; }
+    .titB img { width: 28px; height: 28px; border-radius: 50%; background: #0c1727; margin-right: 8px; }
+    .titB .who { display: flex; align-items: baseline; gap: 0; min-width: 0; }
+    .titB strong { display: block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 20px; color: #d2d4d6; cursor: pointer; font-family: Roboto, "Noto Sans KR", Dotum, "돋움", sans-serif, Arial, Helvetica; font-size: 20px; font-weight: 700; font-style: normal; line-height: 20px; white-space: nowrap; }
+    .titB p { display: block; box-sizing: content-box; margin: 0 4px; padding: 0; border: 0; height: 14.72px; color: #d2d4d6; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; font-style: normal; line-height: normal; white-space: nowrap; }
+    .titB .arrow { box-sizing: content-box; display: block; width: 13px; height: 44px; margin: 0; padding: 0 8px; overflow: hidden; border: 0; color: #333; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; line-height: normal; text-indent: -11988px; text-decoration: none; vertical-align: top; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DSlPD5Zf.png) no-repeat 50% 20px; }
+    .inforTab { flex: 1; display: flex; align-items: flex-end; justify-content: center; height: 52px; }
+    .inforTab span { display: block; box-sizing: border-box; width: 140px; height: 45px; margin: 0; padding: 0; border: 0; line-height: 45px; text-align: center; white-space: nowrap; cursor: pointer; text-decoration: none; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 700; color: #d2d4d6; }
+    .inforTab .on { color: #0062df; border-bottom: 2.56px solid #0062df; }
+    .gear { box-sizing: border-box; position: relative; display: block; align-self: flex-end; width: 44px; height: 44px; margin: 0; padding: 0; overflow: hidden; border: 0; border-left: 1px solid #1e2939; color: #333; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; line-height: normal; text-indent: -119988px; text-decoration: none; vertical-align: top; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DLbiqYLm.svg) no-repeat center; }
+    .marketB { position: relative; display: flex; align-items: center; margin: 0; padding: 18px 20px 14px; color: #d2d4d6; min-height: 87px; }
+    #spark { width: 140px; height: 50px; display: block; flex: 0 0 140px; margin: 0 16px; padding: 0; border: 0; background: transparent; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .px.up { color: #dd3c44; } .px.down { color: #1375ec; }
+    .px { flex: 0 0 220px; }
+    .px .big { display: inline-block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 39.04px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 32px; font-weight: 500; font-style: normal; line-height: normal; letter-spacing: normal; }
+    .px em { display: inline-block; box-sizing: content-box; margin: 0 4px 0 2px; padding: 0; border: 0; height: 16.64px; color: inherit; font-style: normal; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 14px; font-weight: 400; line-height: normal; }
+    .px .chg { margin-top: 6px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 500; line-height: normal; }
+    .px .chg strong { display: inline-block; box-sizing: content-box; height: 19.2px; margin: 0; padding: 0; color: inherit; font-size: 16px; font-weight: 500; line-height: normal; }
+    .px .chg .upDown { display: inline-block; box-sizing: content-box; height: 19.2px; margin: 0 0 0 6px; padding: 0 0 0 14px; border: 0; color: inherit; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 500; font-style: normal; line-height: normal; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DNyDWqo1.png) 0 50% no-repeat; }
+    .px.up .chg .upDown { background-image: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-ClHWRj2a.png); }
+    .kv { flex: 1 1 0; display: grid; grid-template-columns: auto 1fr; column-gap: 16px; row-gap: 0; align-items: start; font-size: 12px; padding-right: 8px; min-width: 0; }
+    .kv .k { box-sizing: content-box; display: block; height: 18px; margin: 0; padding: 0; border: 0; color: #d2d4d6; font-family: Roboto, "Noto Sans KR", sans-serif, Arial, Helvetica; font-size: 12px; font-weight: 400; line-height: 18px; white-space: nowrap; }
+    .kv .k:nth-child(1), .kv > :nth-child(2) { margin-bottom: 9px; padding-bottom: 9px; border-bottom: 0.64px solid #1e2939; }
+    .kv .hi, .kv .lo, .kv .v { box-sizing: content-box; height: 18px; line-height: 18px; text-align: right; font-weight: 500; font-size: 14px; }
+    .kv .hi strong, .kv .lo strong { display: inline-block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 18px; line-height: 18px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 14px; font-weight: 500; font-style: normal; text-align: right; word-break: break-all; }
+    .kv .hi strong { color: #dd3c44; }
+    .kv .lo strong { color: #1375ec; }
+    .kv .v { color: #d6d8db; }
+    .kv .unit { color: #8e929b; font-weight: 400; margin-left: 4px; font-size: 12px; }
+    .ex { margin: 0; color: #d2d4d6; display: block; width: 100%; height: 33px; padding: 0 20px; background: #0c1727; font-size: 13px; overflow: hidden; }
+    .ex-view { height: 33px; overflow: hidden; }
+    .ex-track { will-change: transform; }
+    .ex-page { height: 33px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; }
+    .ex-page span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ex b { color: #d6d8db; font-weight: 500; margin: 0 6px; }
+    .ex .usd { color: #8e929b; }
+    .topbar {
+      flex: 0 0 38px; height: 38px; display: flex; align-items: center; gap: 2px;
+      padding: 0 8px 0 10px; background: #0d192a; font-size: 13px; color: #8e929b;
+    }
+    .topbar .tf { background: none; border: 0; color: #8e929b; padding: 4px 8px; cursor: pointer; border-radius: 4px; }
+    .topbar .tf.on { background: #1a2434; color: #fff; }
+    .topbar .caret { color: #565d6a; margin-right: 6px; font-size: 10px; }
+    .topbar .htools { display: flex; align-items: center; margin-left: 4px; color: #8e929b; }
+    .topbar .htools .hi { width: 32px; height: 28px; display: grid; place-items: center; }
+    .topbar .htools svg, .sidebar .ico svg, .chart-gear svg { stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+    .topbar .htools svg { width: 18px; height: 18px; }
+    .topbar .sp { flex: 1; }
+    .rad { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; color: #d6d8db; }
+    .rad i { width: 14px; height: 14px; border: 1.5px solid #565d6a; border-radius: 50%; display: inline-block; }
+    .rad.on i { border-color: #fff; background: radial-gradient(circle, #fff 0 3px, transparent 4px); }
+    .chart-wrap { flex: 1; display: flex; flex-direction: row; gap: 6px; min-width: 0; min-height: 0; background: transparent; }
+    .sidebar { width: 52px; flex: 0 0 52px; background: #0c1727; display: flex; position: relative; user-select: none; }
+    .toolgroup { width: 52px; height: 100%; padding: 8px 0 12px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; color: #d6d8db; }
+    .sidebar .ico { width: 40px; height: 32px; border-radius: 6px; display: grid; place-items: center; color: #d6d8db; }
+    .sidebar .ico svg { width: 22px; height: 22px; }
+    .sidebar .ico.on { background: #1a2434; color: #fff; }
+    .tool-fold { position: absolute; left: 40px; bottom: 36px; width: 18px; height: 18px; border-radius: 50%; background: #1a2434; color: #8e929b; font-size: 11px; display: grid; place-items: center; border: 1px solid #313b4b; }
+    .chart-pane { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; background: #05111e; overflow: hidden; }
+    .main { position: relative; flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: #05111e; }
+    .legend-fold, .tvmark, .chart-gear { position: absolute; z-index: 2; }
+    .legend-fold { position: relative; z-index: 2; width: 28px; height: 18px; margin: 4px 0 0 0; border-radius: 4px; border: 1px solid #313b4b; background: #0c1727; color: #8e929b; font-size: 11px; line-height: 16px; display: grid; place-items: center; pointer-events: auto; cursor: pointer; }
+    .tvmark { left: 8px; bottom: 8px; width: 28px; height: 28px; border-radius: 50%; background: #1a2434; color: #fff; font-size: 11px; font-weight: 800; display: grid; place-items: center; }
+    .chart-gear { right: 6px; bottom: 4px; color: #8e929b; width: 22px; height: 22px; display: grid; place-items: center; }
+    .chart-gear svg { width: 16px; height: 16px; }
+    .meta { position: relative; z-index: 2; padding: 2px 8px 0 8px; font-size: 13px; line-height: 0; pointer-events: none; }
+    .meta .more { pointer-events: auto; }
+    .meta .row { display: flex; align-items: baseline; min-height: 0; min-width: 0; }
+    .meta .twrap { position: relative; display: inline-flex; align-items: baseline; flex: 0 0 auto; line-height: normal; }
+    .meta .t { display: block; box-sizing: content-box; height: 18.56px; margin: 0; padding: 0; color: #dbdbdb; font-family: -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif; font-feature-settings: "lnum", "tnum"; font-size: 16px; font-weight: 400; line-height: normal; white-space: nowrap; -webkit-font-smoothing: antialiased; }
+    .more { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 18px; margin-left: 2px; border-radius: 4px; border: 1px solid #313b4b; background: #1a2434; color: #d6d8db; font-size: 11px; letter-spacing: 1px; cursor: pointer; opacity: 0; pointer-events: none; }
+    .meta:hover .more { opacity: 1; pointer-events: auto; }
+    .meta .ohlc { display: block; box-sizing: content-box; min-width: 0; height: 19.2px; margin: 0; padding: 0; border-left: 3.84px solid transparent; overflow: hidden; color: #dd3c44; font-family: -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif; font-feature-settings: "lnum", "tnum"; font-size: 13px; font-weight: 400; line-height: normal; text-align: left; white-space: nowrap; text-overflow: ellipsis; user-select: none; cursor: default; pointer-events: auto; -webkit-font-smoothing: antialiased; }
+    .meta .ohlc.down { color: #1375ec; }
+    .vol { display: flex; align-items: baseline; margin: 0; min-width: 0; line-height: normal; }
+    .vol-name { display: block; box-sizing: content-box; height: 19.2px; margin: 0; padding: 0; overflow: hidden; color: #dbdbdb; background: transparent; font-family: -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif; font-feature-settings: "lnum", "tnum"; font-size: 13px; font-weight: 400; font-style: normal; line-height: normal; letter-spacing: normal; text-align: left; white-space: nowrap; text-overflow: ellipsis; user-select: none; cursor: default; pointer-events: auto; vertical-align: baseline; -webkit-font-smoothing: antialiased; }
+    .vol b { display: flex; box-sizing: content-box; height: 15.36px; margin: 0 0 0 6px; padding: 0; color: #dd3c44; cursor: default; font-family: -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif; font-feature-settings: "lnum", "tnum"; font-size: 13px; font-weight: 400; line-height: normal; text-align: left; white-space: nowrap; user-select: none; pointer-events: auto; -webkit-font-smoothing: antialiased; }
+    .vol b.down { color: #1375ec; }
+    #board { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; z-index: 1; }
+    #board.drag { cursor: grabbing; }
+    .bottom { flex: 0 0 36px; height: 36px; display: flex; align-items: center; gap: 16px; padding: 0 14px; background: #0d192a; color: #8e929b; font-size: 12px; }
+    .bottom .sp { flex: 1; }
+    .auto { color: #d6d8db; }
+    .status { color: #8e929b; font-size: 11px; margin-left: 8px; }
+    .mkts { width: 400px; flex: 0 0 400px; background: #0c1727; display: flex; flex-direction: column; min-height: 0; color: #d6d8db; }
+    .mkts-top { display: flex; align-items: stretch; height: 42px; }
+    .mkts-search { position: relative; flex: 1; overflow: hidden; box-sizing: content-box; width: 332px; height: 26px; margin: 0; border: 0; border-right: 1px solid #1e2939; padding: 8px 9px 8px 14px; color: #d2d4d6; display: flex; align-items: center; gap: 6px; }
+    .mkts-search input { flex: 1; min-width: 0; height: 26px; margin: 0; padding: 0; border: 0; background: transparent; color: #d2d4d6; font: inherit; font-size: 13px; outline: none; }
+    .mkts-search input::placeholder { color: #8e929b; }
+    .mkts-search .lens { color: #8e929b; font-size: 16px; line-height: 1; }
+    .mkt-set { margin: 0; padding: 0; border: 0; color: #333; text-decoration: none; position: relative; display: block; overflow: hidden; flex: 0 0 44px; width: 44px; height: 100%; text-indent: -9999em; cursor: pointer; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DLbiqYLm.svg) no-repeat center; }
+    .mkts-tabs { display: flex; margin: 0; padding: 0; border-bottom: 1px solid #1a2434; }
+    .mkts-tabs span { flex: 0 0 80px; width: 80px; }
+    .mkts-tabs a { display: block; width: 100%; box-sizing: content-box; height: 44px; line-height: 42px; margin: 0; padding: 0; border: 0; border-bottom: 1px solid #1e2939; text-decoration: none; text-align: center; font-family: Roboto, "Noto Sans KR", Dotum, "돋움", sans-serif; font-size: 14px; font-weight: 500; color: #d2d4d6; cursor: pointer; }
+    .mkts-tabs a.on { height: 42px; font-weight: 700; color: #0062df; border-bottom: 3px solid #0062df; }
+    .mkts-head, .mrow { display: grid; grid-template-columns: 20px 22px 104px 88px 78px 88px; gap: 0; align-items: center; padding: 0; }
+    .mkts-head { width: 100%; height: 30px; margin: 0; background: #141a24; color: #858b95; font-size: 11px; }
+    .mkts-head span { cursor: pointer; text-align: right; }
+    .mkts-head span[data-k="name"], .mrow .nm { text-align: left; }
+    .mkts-list { flex: 1; overflow: auto; min-height: 0; width: 100%; margin: 0; padding: 0; color: #d2d4d6; }
+    .mrow { height: 45px; border-top: 1px solid #1a2434; cursor: pointer; font-size: 12px; }
+    .mrow:hover, .mrow.on { background: #0d192a; }
+    .mrow .nm strong { font-weight: 700; color: #d6d8db; }
+    .mrow .sym { color: #8e929b; font-size: 11px; }
+    .mrow .px, .mrow .chg { font-weight: 700; text-align: right; }
+    .mrow .amt { text-align: right; color: #d6d8db; font-size: 12px; }
+    .mrow .amt i { font-style: normal; color: #8e929b; font-size: 11px; margin-left: 1px; }
+    .mrow .up { color: #dd3c44; } .mrow .down { color: #1375ec; } .mrow .flat { color: #8e929b; }
+    .star { color: #565d6a; font-size: 13px; }
+    .bar { position: relative; width: 14px; height: 24px; margin: 0 auto; }
+    .bar .line, .bar .box { position: absolute; left: 6px; width: 1px; background: #8e929b; }
+    .bar .box { left: 4px; width: 5px; }
+    .bar.up .line, .bar.up .box { background: #dd3c44; }
+    .bar.down .line, .bar.down .box { background: #1375ec; }
+    .bdg { display: inline-block; margin-left: 4px; padding: 0 3px; border-radius: 2px; background: #dd3c44; color: #fff; font-style: normal; font-size: 10px; }
+    .mkts-note { color: #8e929b; font-size: 11px; padding: 4px 12px 8px; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="replaybar">
+    <span>마켓</span><input id="market" value="KRW-XRP" size="10" />
+    <span>시점</span><input type="date" id="asof" value="2026-08-17" />
+    <input type="time" id="astime" value="00:00:00" step="1" />
+    <button class="go" id="apply">이 날짜까지</button>
+    <button id="play">리플레이</button>
+    <select id="speed" title="재생 속도">
+      <option value="1">1초 (실시간)</option>
+      <option value="5">5초</option>
+      <option value="60" selected>1분</option>
+      <option value="300">5분</option>
+    </select>
+    <button id="reset">오늘까지</button>
+    <button id="zoomReset">전체보기</button>
+    <label><input type="checkbox" id="lockScale" checked /> 이후 구간 빈칸</label>
+    <input type="range" id="range" min="20" max="200" value="200" style="width:220px" />
+    <span class="status" id="status"></span>
+  </div>
+  <div class="stage">
+    <div class="trade">
+      <div class="upbit-head">
+        <div class="titB">
+          <a class="select" href="#">
+            <img id="coinLogo" alt="" src="https://static.upbit.com/logos/XRP.png" />
+            <span class="who"><strong id="coinName">엑스알피(리플)</strong><p id="coinPair">XRP/KRW</p></span>
+            <span class="arrow">Arrow</span>
+          </a>
+          <div class="inforTab"><span class="on">시세</span><span>정보</span><span>마켓 인사이트</span></div>
+          <a class="gear" href="#" title="화면 설정">설정</a>
+        </div>
+        <div class="marketB">
+          <div class="px down" id="pxBox">
+            <div class="first"><strong class="big" id="headPx">-</strong><em>KRW</em></div>
+            <div class="chg" id="headChg"><strong id="headPct">-</strong><strong class="upDown" id="headDelta"></strong></div>
+          </div>
+          <canvas id="spark" width="140" height="50"></canvas>
+          <div class="kv">
+            <div class="k">고가</div><div class="hi"><strong class="up" id="headHi">-</strong></div>
+            <div class="k">저가</div><div class="lo"><strong class="down" id="headLo">-</strong></div>
+          </div>
+          <div class="kv">
+            <div class="k">거래량(24H)</div><div class="v" id="headVol">-</div>
+            <div class="k">거래대금(24H)</div><div class="v" id="headAmt">-</div>
+          </div>
+        </div>
+        <div class="ex" id="exRow">
+          <div class="ex-view"><div class="ex-track" id="exTrack"></div></div>
+        </div>
+        <div class="topbar">
+          <button class="tf" data-unit="minutes/60">1시간</button>
+          <button class="tf" data-unit="minutes/240">4시간</button>
+          <button class="tf on" data-unit="days">일</button>
+          <button class="tf" data-unit="weeks">주</button>
+          <button class="tf" data-unit="months">달</button>
+          <span class="caret">▾</span>
+          <div class="htools">
+            <span class="hi" title="봉"><svg viewBox="0 0 24 24"><path d="M7 4v6M7 14v6M17 4v4M17 12v8M5 10h4M15 8h4"/></svg></span>
+            <span class="hi" title="지표"><svg viewBox="0 0 24 24"><path d="M4 17l4-6 3 3 4-6 4 4"/></svg></span>
+            <span class="hi" title="비교"><svg viewBox="0 0 24 24"><path d="M13 3L6 13h5l-1 8 8-12h-5z"/></svg></span>
+            <span class="hi" title="도형"><svg viewBox="0 0 24 24"><path d="M12 4l2.2 3.2H18l-2 3.2 2 3.2h-3.8L12 17l-2.2-3.4H6l2-3.2-2-3.2h3.8z"/></svg></span>
+            <span class="hi" title="전체화면"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span>
+            <span class="hi" title="스냅샷"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3"/></svg></span>
+          </div>
+          <span class="sp"></span>
+          <span class="rad"><i></i>기본차트</span>
+          <span class="rad on"><i></i>트레이딩뷰</span>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div class="sidebar">
+          <div class="toolgroup">
+            <div class="ico on" title="십자선"><svg viewBox="0 0 24 24"><path d="M12 3.5v17M3.5 12h17"/></svg></div>
+            <div class="ico" title="추세선"><svg viewBox="0 0 24 24"><path d="M6 18.5 L18.5 6"/><circle cx="6" cy="18.5" r="2"/><circle cx="18.5" cy="6" r="2"/></svg></div>
+            <div class="ico" title="피보나치"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg></div>
+            <div class="ico" title="패턴"><svg viewBox="0 0 24 24"><path d="M5 16 L10 8 L14 13 L19 6"/><circle cx="5" cy="16" r="1.5"/><circle cx="10" cy="8" r="1.5"/><circle cx="14" cy="13" r="1.5"/><circle cx="19" cy="6" r="1.5"/></svg></div>
+            <div class="ico" title="채널"><svg viewBox="0 0 24 24"><path d="M7 7h13M7 17h13"/><path d="M7 12h13" stroke-dasharray="1.6 2"/><circle cx="5.2" cy="7" r="1.4"/><circle cx="5.2" cy="17" r="1.4"/></svg></div>
+            <div class="ico" title="브러시"><svg viewBox="0 0 24 24"><path d="M4 15c3-1 4-6 8-5s4 2 8-4"/><path d="M17 5c1.2.2 2 .8 2.4 1.6"/></svg></div>
+            <div class="ico" title="텍스트"><svg viewBox="0 0 24 24"><path d="M5 5.5h14M12 5.5V20"/></svg></div>
+            <div class="ico" title="아이콘"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.2"/><circle cx="9" cy="11" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r="0.9" fill="currentColor" stroke="none"/><path d="M8.8 14.2c1 1.2 5.4 1.2 6.4 0"/></svg></div>
+            <div class="ico" title="측정"><svg viewBox="0 0 24 24"><g transform="rotate(-38 12 12)"><rect x="9" y="3" width="5.2" height="18" rx="0.6"/><path d="M14.2 6.5h-2.2M14.2 9.2h-3.2M14.2 12h-2.2M14.2 14.8h-3.2M14.2 17.5h-2.2"/></g></svg></div>
+            <div class="ico" title="확대"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.6"/><path d="M14.8 14.8L20 20M10.5 8v5M8 10.5h5"/></svg></div>
+            <div class="ico" title="자석"><svg viewBox="0 0 24 24"><path d="M8 3.5v8.2a4 4 0 0 0 8 0V3.5"/><path d="M8 3.5h3v4.6H8zM13 3.5h3v4.6h-3z"/></svg></div>
+          </div>
+          <div class="tool-fold">‹</div>
+        </div>
+        <div class="chart-pane">
+          <div class="main">
+            <div class="meta">
+              <div class="row">
+                <span class="twrap"><span class="t" id="title">XRP/KRW · 1일 · UPBIT</span><button class="more" type="button">•••</button></span>
+                <span class="ohlc" id="ohlc"></span>
+              </div>
+              <div class="vol"><span class="vol-name">거래량 (Volume)</span><b id="volTxt">-</b></div>
+              <div class="legend-fold">⌃</div>
+            </div>
+            <canvas id="board"></canvas>
+            <div class="tvmark">TV</div>
+            <div class="chart-gear"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/></svg></div>
+          </div>
+          <div class="bottom">
+            <span>30일 &nbsp; 5일 &nbsp; 1일</span>
+            <span class="sp"></span>
+            <span id="clock"></span>
+            <span>% &nbsp; 로그</span>
+            <span class="auto">자동</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="mkts">
+      <div class="mkts-top">
+        <div class="mkts-search"><input id="mktQ" placeholder="코인명/심볼검색" /><span class="lens">⌕</span></div>
+        <a class="mkt-set" href="#" title="설정">설정</a>
+      </div>
+      <div class="mkts-tabs" id="mktTabs">
+        <span><a class="on" data-quote="KRW" href="#">원화</a></span>
+        <span><a data-quote="BTC" href="#">BTC</a></span>
+        <span><a data-quote="USDT" href="#">USDT</a></span>
+        <span><a href="#">보유</a></span>
+        <span><a href="#">관심</a></span>
+      </div>
+      <div class="mkts-head" id="mktHead">
+        <span></span><span></span>
+        <span data-k="name">한글명</span>
+        <span data-k="price">현재가</span>
+        <span data-k="chg">전일대비</span>
+        <span data-k="amount">거래대금</span>
+      </div>
+      <div class="mkts-list" id="mktList"></div>
+      <div class="mkts-note" id="mktNote">시세를 불러오는 중</div>
+    </aside>
+  </div>
+</div>
+<script>
+const API = "https://api.upbit.com/v1";
+async function apiFetch(path) {
+  const urls = ["/upbit" + path, API + path];
+  let last = "시세 연결 실패";
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(12000) });
+      if (res.ok) return res;
+      last = "시세 " + res.status;
+      if (res.status === 429) { const err = new Error("429"); err.retry = true; throw err; }
+    } catch (e) {
+      if (e.retry) throw e;
+      last = e.name === "TimeoutError" || e.name === "AbortError" ? "시세 시간 초과" : (e.message || last);
+    }
+  }
+  throw new Error(last);
+}
+const UP = "#dd3c44", DOWN = "#1375ec";
+const VOL_UP = "#712631", VOL_DOWN = "#0c4385";
+const GRID = "#131e2a";
+const AXIS = "#bcbcbc";
+const SCALE_FONT = '14px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';
+let all = [], view = [], unit = "days", playing = false;
+let winL = 0, winR = 1, priceZoom = 1, priceShift = 0, priceMode = "auto";
+let lockedMin = 0, lockedMax = 1;
+let lastPriceSpan = 1, lastPriceH = 300;
+let minuteBars = [], minuteKey = "", replayAt = 0, replayHold = false, replayTimer = 0;
+let loadedMarket = "";
+let loading = false;
+let drag = null;
+let pointer = null;
+let measure = null;
+let chartGeom = null;
+const $ = id => document.getElementById(id);
+const canvas = $("board"), ctx = canvas.getContext("2d");
+
+function tickOf(price) {
+  const p = Math.abs(price);
+  const rows = [
+    [2000000, Infinity, 1000],
+    [1000000, 2000000, 1000],
+    [500000, 1000000, 500],
+    [100000, 500000, 100],
+    [50000, 100000, 50],
+    [10000, 50000, 10],
+    [5000, 10000, 5],
+    [1000, 5000, 1],
+    [100, 1000, 1],
+    [10, 100, 0.1],
+    [1, 10, 0.01],
+    [0.1, 1, 0.001],
+    [0.01, 0.1, 0.0001],
+    [0.001, 0.01, 0.00001],
+    [0.0001, 0.001, 0.000001],
+    [0.00001, 0.0001, 0.0000001],
+    [0, 0.00001, 0.00000001]
+  ];
+  for (const [min, max, tick] of rows) if (p >= min && p < max) return tick;
+  return 1000;
+}
+function snapTick(n) {
+  const t = tickOf(n);
+  const digits = t >= 1 ? 0 : Math.min(8, Math.round(-Math.log10(t)));
+  return Number((Math.round(n / t) * t).toFixed(digits));
+}
+function headNum(n) {
+  if (n == null || !Number.isFinite(n)) return "-";
+  const v = snapTick(n);
+  const t = tickOf(v);
+  const digits = t >= 1 ? 0 : Math.min(8, Math.round(-Math.log10(t)));
+  return v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+}
+function headQty(n, unit) {
+  if (n == null || !Number.isFinite(n)) return "-";
+  const digits = Math.abs(n) >= 100 ? 0 : Math.abs(n) >= 1 ? 2 : 4;
+  return n.toLocaleString("en-US", { maximumFractionDigits: digits }) + '<span class="unit">' + unit + "</span>";
+}
+function paintQuote(last, prev) {
+  const code = marketCode($("market").value);
+  const quote = code.split("-")[0] || "KRW";
+  const sym = code.split("-")[1] || code;
+  const tick = tickerMap[code];
+  const live = typeof isLiveList === "function" && isLiveList() && tick;
+  const px = live ? tick.price : last.close;
+  const base = live ? (tick.prevClose || prev) : prev;
+  const dlt = px - base;
+  const pc = live ? tick.chg : (base ? dlt / base * 100 : 0);
+  const dn = dlt < 0;
+  $("pxBox").className = "px " + (dn ? "down" : "up");
+  $("headPx").textContent = headNum(px);
+  const unitEl = $("pxBox").querySelector("em");
+  if (unitEl) unitEl.textContent = quote;
+  $("headPct").textContent = (pc < 0 ? "" : "+") + pc.toFixed(2) + "%";
+  $("headDelta").textContent = (dn ? "-" : "+") + headNum(Math.abs(dlt));
+  $("headHi").textContent = headNum(live ? tick.high : last.high);
+  $("headLo").textContent = headNum(live ? tick.low : last.low);
+  $("headVol").innerHTML = headQty(live ? tick.vol : last.volume, sym);
+  $("headAmt").innerHTML = headQty(live ? tick.amount : last.close * last.volume, quote);
+  if (sym + "|" + quoteDay() !== exKey) loadExchanges(sym, quoteDay());
+}
+function fmt(n) {
+  if (n == null || !Number.isFinite(n)) return "-";
+  const v = snapTick(n);
+  const t = tickOf(v);
+  const tickDigits = t >= 1 ? 0 : Math.min(8, Math.round(-Math.log10(t)));
+  const digits = Math.min(10, tickDigits + 1);
+  return v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+}
+function fmtDelta(n, ref) {
+  const t = tickOf(ref);
+  const tickDigits = t >= 1 ? 0 : Math.min(8, Math.round(-Math.log10(t)));
+  const digits = Math.min(10, tickDigits + 1);
+  const sign = n > 0 ? "+" : "";
+  return sign + n.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+}
+function volFmt(v) {
+  const abs = Math.abs(v);
+  const suf = abs >= 1e12 ? [1e12, "T"] : abs >= 1e9 ? [1e9, "B"] : abs >= 1e6 ? [1e6, "M"] : abs >= 1e3 ? [1e3, "K"] : null;
+  if (!suf) return Math.round(v).toLocaleString("en-US");
+  return (v / suf[0]).toFixed(2) + suf[1];
+}
+function unitLabel() {
+  return { "minutes/60": "1시간", "minutes/240": "4시간", days: "1일", weeks: "1주", months: "1달" }[unit];
+}
+
+function marketCode(raw) {
+  let s = String(raw || "").trim().toUpperCase().replace(/\s+/g, "");
+  if (!s) return "";
+  if (!s.includes("-")) s = "KRW-" + s;
+  return s;
+}
+async function fetchAll(onChunk) {
+  const market = marketCode($("market").value);
+  $("market").value = market;
+  $("status").textContent = "불러오는 중…";
+  let acc = [], to = "";
+  for (let i = 0; i < 6; i++) {
+    let path = "/candles/" + unit + "?market=" + encodeURIComponent(market) + "&count=200";
+    if (to) path += "&to=" + encodeURIComponent(to);
+    const res = await apiFetch(path);
+    const batch = await res.json();
+    if (!batch.length) break;
+    acc = acc.concat(batch);
+    to = batch[batch.length - 1].candle_date_time_utc;
+    acc.sort((a,b) => a.candle_date_time_kst.localeCompare(b.candle_date_time_kst));
+    all = acc.map(c => ({
+      kst: c.candle_date_time_kst.slice(0,10),
+      ts: Date.parse(c.candle_date_time_kst + "+09:00"),
+      open:+c.opening_price, high:+c.high_price, low:+c.low_price, close:+c.trade_price,
+      volume:+c.candle_acc_trade_volume
+    }));
+    minuteBars = []; minuteKey = "";
+    $("range").max = String(all.length);
+    $("status").textContent = market + " " + all.length + "봉";
+    if (onChunk) onChunk();
+    if (batch.length < 200) break;
+    await new Promise(r => setTimeout(r, 70));
+  }
+  replayHold = false;
+  winL = 0; winR = all.length;
+  priceMode = "auto";
+  loadedMarket = market;
+}
+
+function applyDate() {
+  stopReplay();
+  replaySim = null;
+  const d = $("asof").value;
+  let idx = 0;
+  all.forEach((c,i) => { if (c.kst <= d) idx = i; });
+  $("range").value = String(idx + 1);
+  renderTo(idx + 1);
+}
+
+function renderTo(n) {
+  view = all.slice(0, Math.max(1, n));
+  if (!view.length) return;
+  const last = view[view.length-1], prev = view.length>1 ? view[view.length-2].close : last.open;
+  const chg = last.close - prev, pct = prev ? chg/prev*100 : 0;
+  const down = chg < 0;
+  $("title").textContent = $("market").value.replace("KRW-","") + "/KRW · " + unitLabel() + " · UPBIT";
+  const ohlc = $("ohlc");
+  ohlc.className = "ohlc" + (down ? " down" : "");
+  ohlc.textContent = "시 " + fmt(last.open) + " 고 " + fmt(last.high) + " 저 " + fmt(last.low) +
+    " 종 " + fmt(last.close) + " " + (down?"":"+") + fmt(chg) + " (" + (down?"":"+") + pct.toFixed(2) + "%)";
+  const vt = $("volTxt");
+  vt.textContent = volFmt(last.volume);
+  vt.className = down ? "down" : "";
+  $("asof").value = last.kst;
+  const code = marketCode($("market").value);
+  const sym = code.split("-")[1] || code;
+  const info = allMarkets.find(m => m.market === code);
+  $("coinName").textContent = info ? info.korean_name : sym;
+  if (!info) loadMarketNames().then(() => {
+    const info2 = allMarkets.find(m => m.market === code);
+    if (info2 && marketCode($("market").value) === code) $("coinName").textContent = info2.korean_name;
+  }).catch(() => {});
+  $("coinPair").textContent = sym + "/" + (code.split("-")[0] || "KRW");
+  const logo = $("coinLogo");
+  if (logo) logo.src = "https://static.upbit.com/logos/" + sym + ".png";
+  $("pxBox").className = "px " + (down ? "down" : "up");
+  paintQuote(last, prev);
+  drawSpark();
+  draw();
+  scheduleList();
+}
+function drawSpark() {
+  const c = $("spark");
+  if (!c || view.length < 2) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = 140, h = 50;
+  c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+  const g = c.getContext("2d");
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.clearRect(0, 0, w, h);
+  const pts = view.slice(-48).map(p => p.close);
+  const min = Math.min.apply(null, pts), max = Math.max.apply(null, pts);
+  const base = pts[0];
+  const x = i => 1 + i / (pts.length - 1) * (w - 2);
+  const y = v => 6 + (max - v) / (max - min || 1) * 36;
+  g.lineWidth = 1.25;
+  g.lineJoin = "round";
+  for (let i = 1; i < pts.length; i++) {
+    g.beginPath();
+    g.moveTo(x(i - 1), y(pts[i - 1]));
+    g.lineTo(x(i), y(pts[i]));
+    g.strokeStyle = pts[i] >= base ? "#dd3c44" : "#1375ec";
+    g.stroke();
+  }
+}
+
+function stopReplay() {
+  playing = false;
+  if (replayTimer) { clearInterval(replayTimer); replayTimer = 0; }
+  $("play").textContent = "리플레이";
+}
+function kstParts(ms) {
+  const s = new Date(ms + 9 * 3600000);
+  const p = n => String(n).padStart(2, "0");
+  return {
+    y: s.getUTCFullYear(), m: s.getUTCMonth(), d: s.getUTCDate(), H: s.getUTCHours(),
+    M: s.getUTCMinutes(), S: s.getUTCSeconds(),
+    date: s.getUTCFullYear() + "-" + p(s.getUTCMonth() + 1) + "-" + p(s.getUTCDate()),
+    time: p(s.getUTCHours()) + ":" + p(s.getUTCMinutes()) + ":" + p(s.getUTCSeconds())
+  };
+}
+function periodStart(ms) {
+  const s = kstParts(ms);
+  const midnight = Date.UTC(s.y, s.m, s.d) - 9 * 3600000;
+  if (unit === "minutes/60") return midnight + s.H * 3600000;
+  if (unit === "minutes/240") return midnight + Math.floor(s.H / 4) * 4 * 3600000;
+  if (unit === "weeks") {
+    const wd = new Date(ms + 9 * 3600000).getUTCDay();
+    return midnight - ((wd + 6) % 7) * 86400000;
+  }
+  if (unit === "months") return Date.UTC(s.y, s.m, 1) - 9 * 3600000;
+  return midnight;
+}
+function evolveMinute(bar, sec) {
+  const u = Math.max(0, Math.min(1, sec / 60));
+  const up = bar.close >= bar.open;
+  const first = up ? bar.high : bar.low;
+  const second = up ? bar.low : bar.high;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  let price = bar.open;
+  if (u < 0.4) price = lerp(bar.open, first, u / 0.4);
+  else if (u < 0.7) price = lerp(first, second, (u - 0.4) / 0.3);
+  else price = lerp(second, bar.close, (u - 0.7) / 0.3);
+  let high = bar.open, low = bar.open;
+  const mark = p => { high = Math.max(high, p); low = Math.min(low, p); };
+  if (u >= 0.4) mark(first); else mark(price);
+  if (u >= 0.7) mark(second); else if (u >= 0.4) mark(price);
+  mark(price);
+  if (u >= 1) { high = bar.high; low = bar.low; price = bar.close; }
+  price = snapTick(price);
+  high = snapTick(Math.max(high, price));
+  low = snapTick(Math.min(low, price));
+  if (low > price) low = price;
+  if (high < price) high = price;
+  return { open: snapTick(bar.open), high, low, close: price, volume: bar.volume * Math.max(u, 0.02) };
+}
+async function ensureMinutes(day) {
+  const market = marketCode($("market").value);
+  const key = market + "|" + day;
+  if (minuteKey === key && minuteBars.length) return;
+  $("status").textContent = day + " 1분봉 불러오는 중…";
+  const dayStart = Date.parse(day + "T00:00:00+09:00");
+  let toMs = dayStart + 86400000;
+  const out = [];
+  for (let i = 0; i < 12; i++) {
+    const u = new URL(API + "/candles/minutes/1");
+    u.searchParams.set("market", market);
+    u.searchParams.set("count", "200");
+    u.searchParams.set("to", new Date(toMs).toISOString().slice(0, 19));
+    const res = await fetch(u);
+    if (!res.ok) throw new Error("분봉 API " + res.status);
+    const batch = await res.json();
+    if (!batch.length) break;
+    for (const c of batch) {
+      const ms = Date.parse(c.candle_date_time_kst + "+09:00");
+      if (ms >= dayStart && ms < dayStart + 86400000) {
+        out.push({
+          ms, open:+c.opening_price, high:+c.high_price, low:+c.low_price,
+          close:+c.trade_price, volume:+c.candle_acc_trade_volume
+        });
+      }
+    }
+    const oldest = Date.parse(batch[batch.length - 1].candle_date_time_utc + "Z");
+    if (!(oldest < toMs)) break;
+    if (oldest <= dayStart) break;
+    toMs = oldest;
+    await new Promise(r => setTimeout(r, 120));
+  }
+  out.sort((a, b) => a.ms - b.ms);
+  minuteBars = out;
+  minuteKey = key;
+  if (!out.length) throw new Error("이 날짜의 1분봉이 없습니다");
+}
+function paintReplay() {
+  const start = periodStart(replayAt);
+  const done = all.filter(c => c.ts < start);
+  const buckets = new Map();
+  for (const b of minuteBars) {
+    if (b.ms > replayAt) break;
+    const sec = Math.min(60, Math.floor((replayAt - b.ms) / 1000));
+    const formed = sec >= 60 ? b : evolveMinute(b, sec);
+    const key = periodStart(b.ms);
+    const g = buckets.get(key);
+    if (!g) {
+      const p = kstParts(key);
+      buckets.set(key, { ts: key, kst: p.date, open: formed.open, high: formed.high, low: formed.low, close: formed.close, volume: formed.volume });
+    } else {
+      g.high = Math.max(g.high, formed.high);
+      g.low = Math.min(g.low, formed.low);
+      g.close = formed.close;
+      g.volume += formed.volume;
+    }
+  }
+  const extra = [...buckets.values()].sort((a, b) => a.ts - b.ts);
+  view = done.concat(extra);
+  if (!view.length) return;
+  const last = view[view.length - 1];
+  const prev = view.length > 1 ? view[view.length - 2].close : last.open;
+  const chg = last.close - prev, pct = prev ? chg / prev * 100 : 0, down = chg < 0;
+  const ohlc = $("ohlc");
+  ohlc.className = "ohlc" + (down ? " down" : "");
+  ohlc.textContent = "시 " + fmt(last.open) + " 고 " + fmt(last.high) + " 저 " + fmt(last.low) +
+    " 종 " + fmt(last.close) + " " + (down ? "" : "+") + fmt(chg) + " (" + (down ? "" : "+") + pct.toFixed(2) + "%)";
+  const vt = $("volTxt");
+  vt.textContent = volFmt(last.volume);
+  vt.className = down ? "down" : "";
+  $("pxBox").className = "px " + (down ? "down" : "up");
+  paintQuote(last, prev);
+  const stamp = kstParts(replayAt);
+  $("asof").value = stamp.date;
+  $("astime").value = stamp.time;
+  $("clock").textContent = stamp.time + " UTC+9";
+  $("status").textContent = "리플레이 " + stamp.date + " " + stamp.time;
+  renderMarkets();
+  draw();
+}
+
+function resize() {
+  const r = canvas.getBoundingClientRect();
+  const dpr = Math.max(1, devicePixelRatio || 1);
+  canvas.width = Math.floor(Math.max(r.width, 100) * dpr);
+  canvas.height = Math.floor(Math.max(r.height, 100) * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  draw();
+}
+
+function nicePriceStep(range, px) {
+  const raw = range / Math.max(2, px / 68);
+  if (!(raw > 0)) return 1;
+  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+  const norm = raw / pow;
+  const marks = [1, 2, 2.5, 4, 5, 10];
+  const m = marks.find(x => x + 1e-9 >= norm) || 10;
+  return m * pow;
+}
+function daysPerCandle() {
+  if (unit === "minutes/60") return 1 / 24;
+  if (unit === "minutes/240") return 1 / 6;
+  if (unit === "weeks") return 7;
+  if (unit === "months") return 30;
+  return 1;
+}
+function dayStep(pxPerDay) {
+  const want = 78 / Math.max(pxPerDay, 0.4);
+  if (want <= 1.4) return 1;
+  if (want <= 4) return 3;
+  if (want <= 10) return 7;
+  if (want <= 20) return 14;
+  if (want <= 45) return 30;
+  if (want <= 80) return 60;
+  return 90;
+}
+function kstShift(kst, days) {
+  const dt = new Date(Date.parse(kst + "T00:00:00Z") + days * 86400000);
+  const m = String(dt.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(dt.getUTCDate()).padStart(2, "0");
+  return dt.getUTCFullYear() + "-" + m + "-" + d;
+}
+function epochDay(kst) {
+  return Math.floor(Date.parse(kst + "T00:00:00Z") / 86400000);
+}
+function isTick(kst, step) {
+  const d = +kst.slice(8, 10), m = +kst.slice(5, 7);
+  if (step >= 90) return m === 1 && d === 1 || ((m - 1) % 3 === 0 && d === 1);
+  if (step >= 60) return d === 1 && (m % 2 === 1);
+  if (step >= 30) return d === 1;
+  if (step >= 7) return epochDay(kst) % step === 0;
+  if ((d - 1) % step !== 0) return false;
+  if (step > 1 && d !== 1 && d + step > 32) return false;
+  return true;
+}
+function timeLabel(kst, step, monthHead) {
+  const y = kst.slice(0, 4), m = +kst.slice(5, 7), d = +kst.slice(8, 10);
+  if (step >= 30) return m === 1 ? y : m + "월";
+  if (d === 1 || monthHead) return m + "월";
+  return String(d);
+}
+function draw() {
+  const w = canvas.getBoundingClientRect().width;
+  const h = canvas.getBoundingClientRect().height;
+  ctx.fillStyle = "#05111e";
+  ctx.fillRect(0,0,w,h);
+  if (!all.length) {
+    ctx.fillStyle = "#8e929b";
+    ctx.font = "13px Roboto, sans-serif";
+    ctx.fillText($("status").textContent || "시세를 불러오는 중", 24, 48);
+    return;
+  }
+
+  const lock = $("lockScale").checked;
+  const lastTs = view.length ? view[view.length - 1].ts || 0 : 0;
+  const axis = lock
+    ? (replayHold ? view.concat(all.filter(c => c.ts > lastTs)) : all)
+    : view;
+  if (winR <= winL) { winL = 0; winR = axis.length; }
+  const padL = 8, padR = 64, padT = 8, padB = 28;
+  const volH = Math.max(56, h * 0.15);
+  const priceH = h - padT - padB - volH - 4;
+  const chartW = w - padL - padR;
+  const i0 = Math.max(0, Math.floor(winL));
+  const i1 = Math.min(axis.length, Math.ceil(winR));
+  const cutoff = view.length - 1;
+  const vis = [];
+  for (let i = i0; i < i1; i++) {
+    if (!axis[i]) continue;
+    if (lock && i > cutoff) continue;
+    vis.push(axis[i]);
+  }
+  const scaleSrc = vis.length ? vis : axis.slice(Math.max(0, axis.length - 40));
+  let pMin, pMax;
+  if (priceMode === "manual") {
+    pMin = lockedMin;
+    pMax = lockedMax;
+  } else {
+    const lo = Math.min(...scaleSrc.map(c => c.low));
+    const hi = Math.max(...scaleSrc.map(c => c.high));
+    const baseHalf = ((hi - lo) / 2) * 1.06 || hi * 0.02 || 1;
+    const midP = (hi + lo) / 2;
+    pMin = midP - baseHalf;
+    pMax = midP + baseHalf;
+    lockedMin = pMin;
+    lockedMax = pMax;
+  }
+  lastPriceSpan = pMax - pMin;
+  lastPriceH = priceH;
+  const vMax = Math.max(...scaleSrc.map(c => c.volume || 0), 1) * 1.08;
+  const span = Math.max(winR - winL, 1);
+  const slot = chartW / span;
+  const barBox = i => {
+    const left = Math.round(padL + (i - winL) * slot);
+    const right = Math.round(padL + (i + 1 - winL) * slot);
+    const spanPx = Math.max(1, right - left);
+    const gap = spanPx <= 2 ? 0 : 1;
+    const width = spanPx - gap;
+    return { left, width, mid: left + width / 2 };
+  };
+  const yP = v => padT + (1-(v-pMin)/(pMax-pMin))*priceH;
+  const yV = v => padT + priceH + 4 + (1-v/vMax)*volH;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, 0, w, h - padB);
+  ctx.clip();
+
+  const step = nicePriceStep(pMax - pMin, priceH);
+  ctx.strokeStyle = GRID;
+  ctx.lineWidth = 1;
+  ctx.fillStyle = "#dbdbdb";
+  ctx.font = SCALE_FONT;
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+  const p0 = Math.ceil(pMin / step) * step;
+  for (let p = p0; p <= pMax + step * 0.001; p += step) {
+    const y = yP(p);
+    if (y < padT - 2 || y > padT + priceH + 2) continue;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+    ctx.fillText(fmt(p), w - 4, y);
+  }
+
+  const stepDays = dayStep(slot / daysPerCandle());
+  const xLines = [];
+  const iFrom = Math.floor(winL);
+  const iTo = Math.ceil(winR);
+  const anchor = axis.length ? axis[axis.length - 1] : null;
+  const kstOf = i => {
+    if (i >= 0 && i < axis.length) return axis[i].kst;
+    if (!anchor) return null;
+    return kstShift(anchor.kst, (i - (axis.length - 1)) * daysPerCandle());
+  };
+  for (let i = iFrom; i < iTo; i++) {
+    const kst = kstOf(i);
+    if (kst && isTick(kst, stepDays)) xLines.push({ i, kst });
+  }
+  ctx.strokeStyle = GRID;
+  ctx.lineWidth = 1;
+  xLines.forEach(t => {
+    const x = Math.round(barBox(t.i).mid) + 0.5;
+    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, h - padB); ctx.stroke();
+  });
+
+  axis.forEach((c, i) => {
+    if (i < i0 || i >= i1) return;
+    if (lock && i > cutoff) return;
+    const box = barBox(i);
+    const x = box.mid;
+    const left = box.left;
+    const up = c.close >= c.open;
+    const col = up ? UP : DOWN;
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(Math.round(x) + 0.5, yP(c.high)); ctx.lineTo(Math.round(x) + 0.5, yP(c.low)); ctx.stroke();
+    const y1 = yP(Math.max(c.open,c.close)), y2 = yP(Math.min(c.open,c.close));
+    ctx.fillRect(left, y1, box.width, Math.max(1, y2-y1));
+    ctx.fillStyle = up ? VOL_UP : VOL_DOWN;
+    ctx.fillRect(left, yV(c.volume), box.width, Math.max(1, yV(0)-yV(c.volume)));
+  });
+
+  if (view.length) {
+    const last = view[view.length-1];
+    const ly = yP(last.close);
+    const col = last.close >= last.open ? UP : DOWN;
+    ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.setLineDash([1, 1]);
+    ctx.beginPath(); ctx.moveTo(padL, Math.round(ly) + 0.5); ctx.lineTo(w-padR, Math.round(ly) + 0.5); ctx.stroke();
+    ctx.setLineDash([]);
+    const scaleTag = (text, y) => {
+      ctx.font = SCALE_FONT;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const tw = ctx.measureText(text).width + 8;
+      const th = 18;
+      const bx = w - 2 - tw;
+      const by = y - th / 2;
+      ctx.fillStyle = col;
+      ctx.fillRect(bx, by, tw, th);
+      ctx.fillStyle = "#fff";
+      ctx.fillText(text, bx + tw / 2, by + th / 2);
+    };
+    scaleTag(fmt(last.close), ly);
+    scaleTag(volFmt(last.volume), h - padB - 12);
+  }
+
+  ctx.restore();
+  ctx.fillStyle = "#05111e";
+  ctx.fillRect(0, h - padB, w, padB);
+  ctx.strokeStyle = "#131e2a";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, h - padB + 0.5);
+  ctx.lineTo(w, h - padB + 0.5);
+  ctx.stroke();
+
+  ctx.fillStyle = AXIS; ctx.font = "12px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+  let prevMonth = "";
+  xLines.forEach(t => {
+    const month = t.kst.slice(0, 7);
+    const head = month !== prevMonth;
+    prevMonth = month;
+    ctx.fillText(timeLabel(t.kst, stepDays, head), barBox(t.i).mid, h - padB / 2 + 4);
+  });
+
+  if (pointer && !drag) {
+    const px = pointer.x, py = pointer.y;
+    if (px >= padL && px <= w - padR && py >= padT && py <= h - padB) {
+      const x = Math.round(px) + 0.5;
+      const y = Math.round(py) + 0.5;
+      ctx.save();
+      ctx.strokeStyle = "rgba(209,212,220,0.7)";
+      ctx.lineWidth = 1;
+      ctx.lineCap = "butt";
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(x, padT);
+      ctx.lineTo(x, h - padB);
+      ctx.moveTo(padL, y);
+      ctx.lineTo(w - padR, y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const idx = Math.round((px - padL) / slot + winL - 0.5);
+      const kst = kstOf(idx);
+      if (kst) {
+        const names = ["일", "월", "화", "수", "목", "금", "토"];
+        const [yy, mm, dd] = kst.slice(0, 10).split("-").map(Number);
+        const wd = names[new Date(Date.UTC(yy, mm - 1, dd)).getUTCDay()];
+        const label = wd + " " + kst.slice(0, 10);
+        ctx.font = "12px sans-serif";
+        const tw = ctx.measureText(label).width + 16;
+        let bx = Math.min(Math.max(px - tw / 2, padL), w - padR - tw);
+        ctx.fillStyle = "#2a2e39";
+        ctx.fillRect(bx, h - padB + 4, tw, 20);
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "center";
+        ctx.fillText(label, bx + tw / 2, h - padB + 18);
+      }
+      let tag = null;
+      if (py <= padT + priceH) {
+        const price = pMax - (py - padT) / priceH * (pMax - pMin);
+        tag = fmt(price);
+      } else {
+        const volTop = padT + priceH + 4;
+        const vol = Math.max(0, (1 - (py - volTop) / volH) * vMax);
+        tag = volFmt(vol);
+      }
+      ctx.font = SCALE_FONT;
+      ctx.textBaseline = "middle";
+      const tw = ctx.measureText(tag).width + 8;
+      const th = 18;
+      const bx = w - 2 - tw;
+      const by = py - th / 2;
+      ctx.fillStyle = "#363a45";
+      ctx.fillRect(bx, by, tw, th);
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.fillText(tag, bx + tw / 2, by + th / 2);
+      ctx.restore();
+    }
+  }
+
+  chartGeom = { pMin, pMax, padL, padT, priceH, slot, winL };
+  if (measure) {
+    const end = measure.locked ? measure.b : (pointer ? hitPoint(pointer.x, pointer.y) : null);
+    const y1 = yP(measure.a.price);
+    if (end) {
+      const y2 = yP(end.price);
+      const x1 = barBox(measure.a.i).mid;
+      const x2 = barBox(end.i).mid;
+      const left = Math.min(x1, x2);
+      const right = Math.max(x1, x2);
+      const top = Math.min(y1, y2);
+      const bot = Math.max(y1, y2);
+      const midX = (x1 + x2) / 2;
+      const midY = (y1 + y2) / 2;
+      const dp = end.price - measure.a.price;
+      const down = dp < 0;
+      const col = down ? "#f23645" : "#2962ff";
+      ctx.save();
+      ctx.fillStyle = down ? "rgba(242,54,69,0.22)" : "rgba(41,98,255,0.18)";
+      ctx.fillRect(left, top, Math.max(2, right - left), Math.max(2, bot - top));
+      ctx.strokeStyle = col;
+      ctx.fillStyle = col;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(left, midY);
+      ctx.lineTo(right, midY);
+      ctx.moveTo(midX, top);
+      ctx.lineTo(midX, bot);
+      ctx.stroke();
+      const arrow = (x, y, dx) => {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - dx * 8, y - 4);
+        ctx.lineTo(x - dx * 8, y + 4);
+        ctx.closePath();
+        ctx.fill();
+      };
+      const arrowV = (x, y, dy) => {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - 4, y - dy * 8);
+        ctx.lineTo(x + 4, y - dy * 8);
+        ctx.closePath();
+        ctx.fill();
+      };
+      if (right - left > 16) arrow(x2 >= x1 ? right : left, midY, x2 >= x1 ? 1 : -1);
+      if (bot - top > 16) arrowV(midX, y2 >= y1 ? bot : top, y2 >= y1 ? 1 : -1);
+
+      const pct = measure.a.price ? dp / measure.a.price * 100 : 0;
+      const bars = Math.round(end.i) - Math.round(measure.a.i);
+      const k1 = kstOf(Math.round(measure.a.i));
+      const k2 = kstOf(Math.round(end.i));
+      let days = bars;
+      if (k1 && k2) {
+        days = Math.round((Date.parse(k2.slice(0, 10) + "T00:00:00Z") - Date.parse(k1.slice(0, 10) + "T00:00:00Z")) / 86400000);
+      }
+      const ref = Math.abs(measure.a.price) || 1;
+      const t = tickOf(ref);
+      const tickDigits = t >= 1 ? 0 : Math.min(8, Math.round(-Math.log10(t)));
+      const digits = Math.min(10, tickDigits + 1);
+      const ticks = Math.round(dp / Math.pow(10, -digits));
+      const iLo = Math.min(Math.round(measure.a.i), Math.round(end.i));
+      const iHi = Math.max(Math.round(measure.a.i), Math.round(end.i));
+      let volSum = 0;
+      for (let i = iLo; i <= iHi; i++) if (axis[i]) volSum += axis[i].volume || 0;
+      const line1 = fmtDelta(dp, ref).replace(/^\+/, "") + " (" + pct.toFixed(2) + "%) " + ticks.toLocaleString("en-US");
+      const line2 = bars + " 봉, " + days + "날";
+      const line3 = "거래량 " + volFmt(volSum);
+      ctx.font = "12px sans-serif";
+      const tw = Math.max(ctx.measureText(line1).width, ctx.measureText(line2).width, ctx.measureText(line3).width) + 28;
+      const th = 62;
+      let bx = Math.min(Math.max(midX - tw / 2, padL), w - padR - tw);
+      let by = down ? bot + 2 : top - th - 2;
+      if (by < 4) by = 4;
+      if (by + th > h - 4) by = h - 4 - th;
+      ctx.fillStyle = col;
+      ctx.beginPath();
+      ctx.roundRect(bx, by, tw, th, 4);
+      ctx.fill();
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.fillText(line1, bx + tw / 2, by + 18);
+      ctx.fillText(line2, bx + tw / 2, by + 36);
+      ctx.fillText(line3, bx + tw / 2, by + 52);
+
+      const pill = (text, x, y, hgt) => {
+        ctx.font = "12px sans-serif";
+        const pw = ctx.measureText(text).width + 14;
+        const px0 = Math.min(Math.max(x - pw / 2, padL), w - padR - pw);
+        ctx.fillStyle = "#2962ff";
+        ctx.fillRect(px0, y, pw, hgt);
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "center";
+        ctx.fillText(text, px0 + pw / 2, y + hgt - 5);
+      };
+      const wd = kst => {
+        if (!kst) return "";
+        const names = ["일", "월", "화", "수", "목", "금", "토"];
+        const [yy, mm, dd] = kst.slice(0, 10).split("-").map(Number);
+        return names[new Date(Date.UTC(yy, mm - 1, dd)).getUTCDay()] + " " + kst.slice(0, 10);
+      };
+      if (k1) pill(wd(k1), x1, h - padB + 4, 20);
+      if (k2) pill(wd(k2), x2, h - padB + 4, 20);
+      ctx.font = "11px sans-serif";
+      const pricePill = (price, y) => {
+        const text = fmt(price);
+        ctx.fillStyle = col;
+        ctx.fillRect(w - padR + 4, y - 8, padR - 10, 16);
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "center";
+        ctx.fillText(text, w - padR / 2 + 1, y + 3);
+      };
+      pricePill(measure.a.price, y1);
+      pricePill(end.price, y2);
+      ctx.restore();
+    }
+  }
+}
+
+function axisLen() {
+  return ($("lockScale").checked ? all : view).length;
+}
+function clampWin() {
+  const n = Math.max(axisLen(), 1);
+  const minSpan = 12;
+  let span = winR - winL;
+  if (span < minSpan) {
+    const mid = (winL + winR) / 2;
+    winL = mid - minSpan / 2;
+    winR = mid + minSpan / 2;
+    span = minSpan;
+  }
+  if (span > n) {
+    const mid = (winL + winR) / 2;
+    winL = mid - n / 2;
+    winR = mid + n / 2;
+    span = n;
+  }
+  const rightLimit = n + span - 8;
+  if (winR > rightLimit) {
+    winL -= winR - rightLimit;
+    winR = rightLimit;
+  }
+  if (winL < -2) {
+    winR -= winL + 2;
+    winL = -2;
+  }
+}
+
+canvas.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const n = axisLen();
+  if (n < 2) return;
+  const r = canvas.getBoundingClientRect();
+  const padL = 8, padR = 64;
+  const chartW = r.width - padL - padR;
+  const x = e.clientX - r.left;
+  const t = Math.min(1, Math.max(0, (x - padL) / chartW));
+  const anchor = winL + t * (winR - winL);
+  const factor = e.deltaY < 0 ? 0.82 : 1.22;
+  const span = Math.max(12, Math.min(n, (winR - winL) * factor));
+  winL = anchor - t * span;
+  winR = winL + span;
+  clampWin();
+  draw();
+}, { passive: false });
+
+function hitPoint(x, y) {
+  if (!chartGeom) return null;
+  const g = chartGeom;
+  const price = g.pMax - (y - g.padT) / g.priceH * (g.pMax - g.pMin);
+  const i = (x - g.padL) / g.slot + g.winL - 0.5;
+  return { i, price };
+}
+
+canvas.addEventListener("mousedown", (e) => {
+  const r = canvas.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+  if (x < r.width - 72 && y > 8 && y < r.height - 28 && (e.shiftKey || (measure && !measure.locked))) {
+    const pt = hitPoint(x, y);
+    if (pt) {
+      const p = { i: pt.i, price: snapTick(pt.price) };
+      if (e.shiftKey && (!measure || measure.locked)) measure = { a: p, b: null, locked: false };
+      else if (measure && !measure.locked) { measure.b = p; measure.locked = true; }
+      draw();
+      return;
+    }
+  }
+  if (x >= r.width - 72) {
+    drag = { kind: "price", y: e.clientY, min: lockedMin, max: lockedMax };
+  } else {
+    drag = { kind: "pan", x: e.clientX, y: e.clientY, l: winL, r: winR, min: lockedMin, max: lockedMax, priceH: lastPriceH };
+  }
+  canvas.classList.add("drag");
+});
+window.addEventListener("mousemove", (e) => {
+  const r = canvas.getBoundingClientRect();
+  if (!drag) {
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    const inside = x >= 0 && y >= 0 && x <= r.width && y <= r.height;
+    pointer = inside ? { x, y } : null;
+    canvas.style.cursor = x >= r.width - 72 ? "ns-resize" : "crosshair";
+    if (inside) draw();
+    return;
+  }
+  if (drag.kind === "price") {
+    priceMode = "manual";
+    const dy = e.clientY - drag.y;
+    const mid = (drag.min + drag.max) / 2;
+    const half = Math.max((drag.max - drag.min) / 2 * Math.exp(dy / 160), 1e-12);
+    lockedMin = mid - half;
+    lockedMax = mid + half;
+    draw();
+    return;
+  }
+  const chartW = r.width - 80;
+  const dx = e.clientX - drag.x;
+  const dy = e.clientY - drag.y;
+  const bars = dx / chartW * (drag.r - drag.l);
+  winL = drag.l - bars;
+  winR = drag.r - bars;
+  clampWin();
+  if (priceMode === "manual") {
+    const span = drag.max - drag.min;
+    const dPrice = dy / Math.max(40, drag.priceH) * span;
+    lockedMin = drag.min + dPrice;
+    lockedMax = drag.max + dPrice;
+  }
+  draw();
+});
+canvas.addEventListener("mouseleave", () => { pointer = null; if (!drag) draw(); });
+window.addEventListener("mouseup", () => { drag = null; canvas.classList.remove("drag"); });
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && measure) { measure = null; draw(); }
+});
+canvas.addEventListener("dblclick", (e) => {
+  const r = canvas.getBoundingClientRect();
+  if (e.clientX - r.left >= r.width - 72) priceMode = "auto";
+  else { winL = 0; winR = axisLen(); }
+  draw();
+});
+
+$("apply").onclick = async () => {
+  if (loading) return;
+  const market = marketCode($("market").value);
+  $("market").value = market;
+  loading = true;
+  try {
+    if (market !== loadedMarket) {
+      stopReplay();
+      replayHold = false;
+      await fetchAll();
+    }
+    applyDate();
+  } catch (e) { $("status").textContent = e.message; }
+  finally { loading = false; }
+};
+$("market").addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); $("apply").click(); }
+});
+$("market").addEventListener("change", () => $("apply").click());
+$("reset").onclick = () => { stopReplay(); replayHold = false; replaySim = null; $("range").value = String(all.length); renderTo(all.length); };
+$("range").oninput = () => renderTo(+$("range").value);
+$("lockScale").onchange = () => { winL = 0; winR = axisLen(); draw(); };
+$("zoomReset").onclick = () => { winL = 0; winR = axisLen(); priceMode = "auto"; draw(); };
+$("play").onclick = async () => {
+  if (playing) { stopReplay(); return; }
+  const day = $("asof").value;
+  const time = $("astime").value || "00:00:00";
+  try {
+    await ensureMinutes(day);
+  } catch (e) {
+    $("status").textContent = e.message;
+    return;
+  }
+  replayHold = true;
+  replayAt = Date.parse(day + "T" + time + "+09:00");
+  const end = Date.parse(day + "T00:00:00+09:00") + 86400000;
+  playing = true;
+  seedReplaySim();
+  $("play").textContent = "정지";
+  const follow = () => {
+    const n = Math.max(view.length, 1);
+    const span = Math.min(winR - winL, 120);
+    winR = n + span * 0.25;
+    winL = winR - span;
+    clampWin();
+  };
+  paintReplay();
+  follow();
+  draw();
+  let wait = 0;
+  let listWait = 0;
+  let lastTick = performance.now();
+  replayTimer = setInterval(() => {
+    if (!playing) { stopReplay(); return; }
+    const now = performance.now();
+    const delta = now - lastTick;
+    wait += delta;
+    listWait += delta;
+    lastTick = now;
+    if (listWait >= 1700) {
+      listWait = 0;
+      stepReplaySim();
+      renderMarkets();
+    }
+    const stepSec = +$("speed").value || 1;
+    const stepMs = stepSec * 1000;
+    if (wait < stepMs) return;
+    const jumps = Math.min(30, Math.floor(wait / stepMs));
+    wait -= jumps * stepMs;
+    replayAt += jumps * stepSec * 1000;
+    if (replayAt >= end) {
+      replayAt = end - 1000;
+      paintReplay();
+      stopReplay();
+      $("status").textContent = "이 날짜 리플레이가 끝났습니다";
+      return;
+    }
+    paintReplay();
+  }, 200);
+};
+document.querySelector(".topbar").onclick = async e => {
+  const b = e.target.closest(".tf"); if (!b) return;
+  stopReplay();
+  replayHold = false;
+  replaySim = null;
+  document.querySelectorAll(".tf").forEach(x=>x.classList.toggle("on", x===b));
+  unit = b.dataset.unit;
+  await fetchAll(); applyDate();
+};
+function tick(){ if (playing || replayHold) return; $("clock").textContent = new Date().toTimeString().slice(0,8) + " UTC+9"; }
+tick(); setInterval(tick,1000);
+
+let allMarkets = [];
+let hourCache = {};
+let listDay = "";
+let listGen = 0;
+let quoteTab = "KRW";
+let mktSort = { key: "amount", dir: -1 };
+let listLive = false;
+let tickerMap = {};
+let exSym = "";
+let mktQuery = "";
+let replaySim = null;
+function seedReplaySim() {
+  if (!replaySim) replaySim = { book: {} };
+  if (Object.keys(replaySim.book).length) return;
+  const at = listMoment();
+  const day = kstParts(at).date;
+  for (const m of allMarkets) {
+    const rec = quoteOf(at, hourCache[m.market + "|" + day]);
+    if (!rec || rec.price == null) continue;
+    replaySim.book[m.market] = {
+      price: snapTick(rec.price),
+      amount: Math.max(0, rec.amount || 0),
+      prevClose: rec.prevClose || rec.price,
+      open: rec.open,
+      high: rec.high,
+      low: rec.low
+    };
+  }
+}
+function stepReplaySim() {
+  if (!replaySim) return;
+  for (const row of Object.values(replaySim.book)) {
+    if (Math.random() > 0.2) continue;
+    const dir = Math.random() < 0.5 ? -1 : 1;
+    const t = tickOf(row.price);
+    let next = snapTick(row.price + dir * t);
+    if (next === row.price) next = snapTick(row.price + dir * t * 2);
+    if (!(next > 0)) next = t;
+    row.price = next;
+    row.high = Math.max(row.high ?? next, next);
+    row.low = Math.min(row.low ?? next, next);
+    row.amount += 1e6 * (1 + Math.floor(Math.random() * 3));
+  }
+}
+function simRec(market, rec) {
+  if (!replaySim || !(playing || replayHold)) return rec;
+  let s = replaySim.book[market];
+  if (!s && rec && rec.price != null) {
+    s = replaySim.book[market] = {
+      price: snapTick(rec.price),
+      amount: Math.max(0, rec.amount || 0),
+      prevClose: rec.prevClose || rec.price,
+      open: rec.open,
+      high: rec.high,
+      low: rec.low
+    };
+  }
+  if (!s) return rec;
+  const prev = s.prevClose || s.price;
+  return {
+    price: s.price,
+    amount: s.amount,
+    open: s.open,
+    high: Math.max(s.high ?? s.price, s.price),
+    low: Math.min(s.low ?? s.price, s.price),
+    prevClose: prev,
+    chg: prev ? (s.price - prev) / prev * 100 : 0
+  };
+}
+function listMoment() {
+  if (playing || replayHold) return replayAt;
+  const last = view.length ? view[view.length - 1] : null;
+  if (!last) return Date.now();
+  const latest = all.length ? all[all.length - 1] : null;
+  if (!playing && !replayHold && latest && last.kst >= latest.kst) return Date.now();
+  if (last.kst >= kstParts(Date.now()).date) return Date.now();
+  return Date.parse(last.kst + "T23:59:59+09:00");
+}
+function isLiveList() {
+  return !playing && !replayHold && kstParts(listMoment()).date === kstParts(Date.now()).date;
+}
+async function loadMarketNames() {
+  if (allMarkets.length) return;
+  const res = await apiFetch("/market/all?isDetails=true");
+  allMarkets = await res.json();
+}
+async function fetchHours(market, day) {
+  const key = market + "|" + day;
+  if (hourCache[key]) return hourCache[key];
+  const toMs = Date.parse(day + "T00:00:00+09:00") + 86400000;
+  let path = "/candles/minutes/60?market=" + encodeURIComponent(market) + "&count=30&to=" + encodeURIComponent(new Date(toMs).toISOString().slice(0, 19));
+  const res = await apiFetch(path);
+  const rows = await res.json();
+  const hours = (Array.isArray(rows) ? rows : []).map(c => ({
+    ts: Date.parse(c.candle_date_time_kst + "+09:00"),
+    open: +c.opening_price, close: +c.trade_price, high: +c.high_price, low: +c.low_price, amount: +c.candle_acc_trade_price
+  })).filter(h => Number.isFinite(h.ts)).sort((a, b) => a.ts - b.ts);
+  hourCache[key] = hours;
+  return hours;
+}
+function quoteOf(at, hours) {
+  if (!hours || !hours.length) return null;
+  const dayStart = Date.parse(kstParts(at).date + "T00:00:00+09:00");
+  const end = at >= dayStart + 86400000 - 2000;
+  let prevClose = null, price = null, amount = 0, seen = false;
+  let open = null, high = null, low = null;
+  for (const h of hours) if (h.ts + 3600000 <= dayStart) prevClose = h.close;
+  for (const h of hours) {
+    if (h.ts < dayStart || h.ts >= dayStart + 86400000) continue;
+    const full = end || h.ts + 3600000 <= at;
+    if (!full && h.ts > at) break;
+    const hh = full ? (h.high ?? Math.max(h.open, h.close)) : h.open;
+    const ll = full ? (h.low ?? Math.min(h.open, h.close)) : h.open;
+    if (open == null) open = h.open;
+    high = high == null ? hh : Math.max(high, hh);
+    low = low == null ? ll : Math.min(low, ll);
+    if (full) { price = h.close; amount += h.amount; seen = true; }
+    else {
+      price = h.open;
+      amount += h.amount * Math.max(0, Math.min(1, (at - h.ts) / 3600000));
+      seen = true;
+      break;
+    }
+  }
+  if (!seen || price == null) return null;
+  return { price, amount, open, high, low, chg: prevClose ? (price - prevClose) / prevClose * 100 : 0, prevClose };
+}
+function miniBar(rec) {
+  if (!rec || rec.price == null) return '<div class="bar"></div>';
+  const ref = rec.prevClose || rec.open || rec.price;
+  if (!ref) return '<div class="bar"></div>';
+  const open = rec.open != null ? rec.open : ref;
+  const high = rec.high != null ? rec.high : Math.max(open, rec.price);
+  const low = rec.low != null ? rec.low : Math.min(open, rec.price);
+  const mid = 12, px = 0.32;
+  const y = v => Math.max(0, Math.min(23, mid - ((v - ref) / ref) * 100 * px));
+  const yH = y(high), yL = y(low), y1 = y(open), y2 = y(rec.price);
+  const cls = rec.chg > 0 ? "up" : rec.chg < 0 ? "down" : "";
+  return '<div class="bar ' + cls + '"><span class="line" style="top:' + Math.min(yH, yL).toFixed(1) + 'px;height:' + Math.max(1, Math.abs(yL - yH)).toFixed(1) + 'px"></span>' +
+    '<span class="box" style="top:' + Math.min(y1, y2).toFixed(1) + 'px;height:' + Math.max(1, Math.abs(y2 - y1)).toFixed(1) + 'px"></span></div>';
+}
+function amtHtml(amount, quote) {
+  if (quote === "KRW") return Math.round(amount / 1e6).toLocaleString("en-US") + "<i>백만</i>";
+  return amtText(amount, quote);
+}
+function amtText(amount, quote) {
+  if (quote === "KRW") return Math.round(amount / 1e6).toLocaleString("en-US") + "백만";
+  if (amount >= 1000) return amount.toLocaleString("en-US", { maximumFractionDigits: 0 });
+  return amount.toLocaleString("en-US", { maximumFractionDigits: 4 });
+}
+function renderMarkets() {
+  const box = $("mktList");
+  if (!box || !allMarkets.length) return;
+  const at = listMoment();
+  const day = kstParts(at).date;
+  if (day !== listDay) { scheduleList(); return; }
+  const q = mktQuery.trim().toLowerCase();
+  const active = marketCode($("market").value);
+  const rows = [];
+  for (const m of allMarkets) {
+    const quote = m.market.split("-")[0];
+    if (quote !== quoteTab) continue;
+    const sym = m.market.split("-")[1];
+    if (q && !m.korean_name.toLowerCase().includes(q) && !sym.toLowerCase().includes(q) && !m.market.toLowerCase().includes(q)) continue;
+    let rec = null;
+    if (isLiveList() && tickerMap[m.market]) rec = tickerMap[m.market];
+    else rec = quoteOf(at, hourCache[m.market + "|" + day]);
+    rec = simRec(m.market, rec);
+    rows.push({ m, sym, rec });
+  }
+  rows.sort((a, b) => {
+    if (mktSort.key === "name") return a.m.korean_name.localeCompare(b.m.korean_name, "ko") * mktSort.dir;
+    const av = a.rec ? a.rec[mktSort.key] : -Infinity;
+    const bv = b.rec ? b.rec[mktSort.key] : -Infinity;
+    return (av - bv) * mktSort.dir;
+  });
+  const loaded = rows.filter(r => r.rec).length;
+  const when = isLiveList()
+    ? kstParts(Date.now()).date + " " + kstParts(Date.now()).time
+    : kstParts(at).date + " " + (playing || replayHold ? kstParts(at).time : "종가");
+  $("mktNote").textContent = loaded + " / " + rows.length + " · " + when;
+  box.innerHTML = rows.map(({ m, sym, rec }) => {
+    const cls = rec ? (rec.chg > 0 ? "up" : rec.chg < 0 ? "down" : "flat") : "flat";
+    const px = rec ? (quoteTab === "KRW" ? fmt(rec.price) : rec.price.toLocaleString("en-US", { maximumFractionDigits: 8 })) : "-";
+    const chg = rec ? (rec.chg > 0 ? "+" : "") + rec.chg.toFixed(2) + "%" : "-";
+    const amt = rec ? amtHtml(rec.amount, quoteTab) : "-";
+    const bdg = m.market_warning === "CAUTION" ? '<i class="bdg">유</i>' : "";
+    return '<div class="mrow' + (m.market === active ? " on" : "") + '" data-m="' + m.market + '">' +
+      '<span class="star">☆</span>' + miniBar(rec) +
+      '<div class="nm"><strong>' + m.korean_name + '</strong>' + bdg + '<div class="sym">' + sym + '/' + quoteTab + '</div></div>' +
+      '<div class="px ' + cls + '">' + px + '</div>' +
+      '<div class="chg ' + cls + '">' + chg + '</div>' +
+      '<div class="amt">' + amt + '</div></div>';
+  }).join("");
+}
+async function loadList(day) {
+  const gen = ++listGen;
+  try { await loadMarketNames(); } catch (e) { $("mktNote").textContent = e.message; return; }
+  if (gen !== listGen) return;
+  renderMarkets();
+  const targets = allMarkets.filter(m => m.market.startsWith(quoteTab + "-") && !hourCache[m.market + "|" + day]);
+  const queue = targets.slice();
+  async function worker() {
+    while (queue.length && gen === listGen) {
+      const m = queue.shift();
+      try { await fetchHours(m.market, day); }
+      catch (e) {
+        if (e.retry && gen === listGen) { queue.unshift(m); await new Promise(r => setTimeout(r, 900)); continue; }
+      }
+      if (gen === listGen) renderMarkets();
+      await new Promise(r => setTimeout(r, 280));
+    }
+  }
+  await Promise.all([worker(), worker(), worker()]);
+}
+function scheduleList() {
+  const day = kstParts(listMoment()).date;
+  const live = isLiveList();
+  if (day === listDay && live === listLive && allMarkets.length) { renderMarkets(); return; }
+  listDay = day;
+  listLive = live;
+  if (live) loadLiveList();
+  else loadList(day);
+}
+let exKey = "";
+let exTimer = 0;
+let exIdx = 0;
+function quoteDay() {
+  if (playing || replayHold) return kstParts(replayAt).date;
+  const last = view.length ? view[view.length - 1] : null;
+  if (!last) return kstParts(Date.now()).date;
+  return last.kst.slice(0, 10);
+}
+function setEx(id, usd, fx) {
+  const el = $(id);
+  if (!el) return;
+  if (usd == null || !Number.isFinite(usd) || !fx) { el.textContent = "-"; return; }
+  const krw = usd * fx;
+  el.innerHTML = krw.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
+    ' <span class="usd">($' + usd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ")</span>";
+}
+const EX_PAGES = [
+  { quote: "EUR", mark: "€", venues: ["Binance", "Coinbase", "Kraken"] },
+  { quote: "GBP", mark: "£", venues: ["Coinbase", "Kraken"] },
+  { quote: "USD", mark: "$", venues: ["Coinbase", "Bitfinex", "Kraken"] },
+  { quote: "JPY", mark: "¥", venues: ["BitFlyer"] }
+];
+let bookPromise = null;
+function exchangeBooks() {
+  if (!bookPromise) bookPromise = buildExchangeBooks();
+  return bookPromise;
+}
+async function buildExchangeBooks() {
+  const book = { Binance: new Set(), Coinbase: new Set(), Kraken: {}, Bitfinex: new Set(), BitFlyer: new Set() };
+  const grab = async (url) => {
+    const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
+    if (!res.ok) throw new Error(String(res.status));
+    return res.json();
+  };
+  try {
+    const j = await grab("/bn/api/v3/exchangeInfo");
+    for (const s of j.symbols || []) {
+      if (s.status !== "TRADING") continue;
+      if (s.quoteAsset === "EUR") book.Binance.add(s.baseAsset + "/EUR");
+    }
+  } catch (e) {}
+  try {
+    const rows = await grab("/cb/products");
+    for (const p of rows) {
+      if (p.status && p.status !== "online") continue;
+      if (["USD", "EUR", "GBP"].includes(p.quote_currency)) book.Coinbase.add(p.base_currency + "/" + p.quote_currency);
+    }
+  } catch (e) {}
+  try {
+    const j = await grab("/kraken/0/public/AssetPairs");
+    for (const [id, p] of Object.entries(j.result || {})) {
+      if (!p.wsname) continue;
+      const [base, quote] = p.wsname.split("/");
+      if (!["USD", "EUR", "GBP"].includes(quote)) continue;
+      const sym = base === "XBT" ? "BTC" : base;
+      book.Kraken[sym + "/" + quote] = id;
+    }
+  } catch (e) {}
+  try {
+    const j = await grab("/bfx/v2/conf/pub:list:pair:exchange");
+    for (const pair of (j && j[0]) || []) {
+      const raw = String(pair).replace(":", "");
+      if (!raw.endsWith("USD") || raw.endsWith("USDT")) continue;
+      book.Bitfinex.add(raw.slice(0, -3) + "/USD");
+    }
+  } catch (e) {}
+  try {
+    const rows = await grab("/bfly/v1/markets");
+    for (const m of rows || []) {
+      const code = m.product_code || "";
+      const parts = code.split("_");
+      if (parts[1] === "JPY") book.BitFlyer.add(parts[0] + "/JPY");
+    }
+  } catch (e) {}
+  return { book, grab };
+}
+function listed(book, venue, sym, quote) {
+  const key = sym + "/" + quote;
+  if (venue === "Kraken") return !!book.Kraken[key];
+  if (venue === "Binance") return book.Binance.has(key);
+  if (venue === "Coinbase") return book.Coinbase.has(key);
+  if (venue === "Bitfinex") return book.Bitfinex.has(key);
+  if (venue === "BitFlyer") return book.BitFlyer.has(key);
+  return false;
+}
+async function slotPrice(book, grab, venue, sym, quote, live, start, end, iso) {
+  if (venue === "Binance") {
+    const symbol = sym + quote;
+    if (live) return +(await grab("/bn/api/v3/ticker/price?symbol=" + symbol)).price;
+    const rows = await grab("/bn/api/v3/klines?symbol=" + symbol + "&interval=1d&startTime=" + start + "&endTime=" + end + "&limit=1");
+    return rows[0] ? +rows[0][4] : null;
+  }
+  if (venue === "Coinbase") {
+    if (live) {
+      const j = await grab("/cbs/v2/prices/" + sym + "-" + quote + "/spot");
+      return j && j.data ? +j.data.amount : null;
+    }
+    const rows = await grab("/cb/products/" + sym + "-" + quote + "/candles?granularity=86400&start=" + iso(start) + "&end=" + iso(end));
+    return Array.isArray(rows) && rows[0] ? +rows[0][4] : null;
+  }
+  if (venue === "Kraken") {
+    const id = book.Kraken[sym + "/" + quote];
+    if (live) {
+      const j = await grab("/kraken/0/public/Ticker?pair=" + id);
+      const row = j && j.result && Object.values(j.result)[0];
+      return row && row.c ? +row.c[0] : null;
+    }
+    const j = await grab("/kraken/0/public/OHLC?pair=" + id + "&interval=1440&since=" + Math.floor(start / 1000));
+    const rows = j && j.result && Object.values(j.result).find(Array.isArray);
+    const hit = (rows || []).filter(r => r[0] * 1000 < end).pop();
+    return hit ? +hit[4] : null;
+  }
+  if (venue === "Bitfinex") {
+    if (live) {
+      const j = await grab("/bfxs/v2/ticker/t" + sym + quote);
+      return Array.isArray(j) ? +j[6] : null;
+    }
+    const rows = await grab("/bfx/v2/candles/trade:1D:t" + sym + quote + "/hist?limit=1&sort=-1&end=" + end);
+    return Array.isArray(rows) && rows[0] ? +rows[0][2] : null;
+  }
+  if (venue === "BitFlyer") {
+    const code = sym + "_" + quote;
+    if (live) return +(await grab("/bfly/v1/ticker?product_code=" + code)).ltp;
+    const j = await grab("/bfly/v1/candlestick?product_code=" + code + "&granularity=86400");
+    const rows = (j && j.candlestick && j.candlestick[0] && j.candlestick[0].ohlc) || [];
+    const hit = rows.filter(r => !r[0] || r[0] < end).pop();
+    return hit ? +hit[4] || +hit.close : null;
+  }
+  return null;
+}
+function paintEx(pages) {
+  const row = $("exRow");
+  const track = $("exTrack");
+  clearInterval(exTimer);
+  exIdx = 0;
+  if (!track || !pages.length) {
+    if (row) row.style.display = "none";
+    return;
+  }
+  row.style.display = "block";
+  track.style.transition = "none";
+  track.style.transform = "translateY(0)";
+  track.innerHTML = pages.map(page =>
+    '<div class="ex-page">' + page.map(it => "<span>" + it.name + " <b>" + it.text + "</b></span>").join("") + "</div>"
+  ).join("");
+  if (pages.length < 2) return;
+  exTimer = setInterval(() => {
+    exIdx = (exIdx + 1) % pages.length;
+    track.style.transition = "transform .45s ease";
+    track.style.transform = "translateY(-" + (exIdx * 33) + "px)";
+  }, 3000);
+}
+async function loadExchanges(sym, day) {
+  const key = sym + "|" + day;
+  if (exKey === key) return;
+  exKey = key;
+  const live = day >= kstParts(Date.now()).date;
+  const start = Date.parse(day + "T00:00:00+09:00");
+  const end = start + 86400000;
+  const iso = ms => new Date(ms).toISOString().replace(/\.\d{3}Z$/, "Z");
+  const { book, grab } = await exchangeBooks();
+  if (exKey !== key) return;
+  const slots = [];
+  for (const page of EX_PAGES) {
+    const venues = page.venues.filter(v => listed(book, v, sym, page.quote));
+    if (venues.length) slots.push({ quote: page.quote, mark: page.mark, venues });
+  }
+  if (!slots.length) { paintEx([]); return; }
+  let rates = { USD: 0, EUR: 0, GBP: 0, JPY: 0 };
+  try {
+    const fxUrl = live ? "/fx/latest?from=USD&to=EUR,GBP,JPY" : "/fx/" + day + "?from=USD&to=EUR,GBP,JPY";
+    const fx = await grab(fxUrl);
+    const r = fx.rates || {};
+    const krwRows = live
+      ? await grab("/upbit/ticker?markets=KRW-USDT")
+      : await grab("/upbit/candles/days?market=KRW-USDT&count=1&to=" + encodeURIComponent(iso(end).replace("Z", "")));
+    const krw = +krwRows[0].trade_price;
+    rates = {
+      USD: krw,
+      EUR: r.EUR ? krw / r.EUR : 0,
+      GBP: r.GBP ? krw / r.GBP : 0,
+      JPY: r.JPY ? krw / r.JPY : 0
+    };
+  } catch (e) {}
+  const pages = [];
+  for (const page of slots) {
+    const cells = [];
+    for (const venue of page.venues) {
+      let foreign = null;
+      try { foreign = await slotPrice(book, grab, venue, sym, page.quote, live, start, end, iso); }
+      catch (e) {}
+      const per = rates[page.quote] || 0;
+      if (!(foreign > 0) || !(per > 0)) continue;
+      const krw = foreign * per;
+      const text = krw.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
+        ' <span class="usd">(' + page.mark + foreign.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ")</span>";
+      cells.push({ name: venue, text });
+    }
+    if (cells.length) pages.push(cells);
+  }
+  if (exKey !== key) return;
+  paintEx(pages);
+}
+async function loadTickers(markets) {
+  const out = {};
+  for (let i = 0; i < markets.length; i += 80) {
+    const chunk = markets.slice(i, i + 80);
+    const res = await apiFetch("/ticker?markets=" + chunk.map(m => m.market).join(","));
+    const rows = await res.json();
+    for (const t of rows) {
+      out[t.market] = {
+        price: +t.trade_price,
+        open: +t.opening_price,
+        high: +t.high_price,
+        low: +t.low_price,
+        chg: +t.signed_change_rate * 100,
+        amount: +t.acc_trade_price_24h,
+        vol: +t.acc_trade_volume_24h,
+        prevClose: +t.prev_closing_price
+      };
+    }
+  }
+  tickerMap = out;
+}
+async function loadLiveList() {
+  const gen = ++listGen;
+  try { await loadMarketNames(); } catch (e) { $("mktNote").textContent = e.message; return; }
+  if (gen !== listGen) return;
+  renderMarkets();
+  const targets = allMarkets.filter(m => m.market.startsWith(quoteTab + "-"));
+  try { await loadTickers(targets); } catch (e) { $("mktNote").textContent = e.message; }
+  if (gen === listGen) renderMarkets();
+}
+setInterval(() => {
+  if (!isLiveList() || !allMarkets.length) return;
+  const targets = allMarkets.filter(m => m.market.startsWith(quoteTab + "-"));
+  loadTickers(targets).then(() => { if (isLiveList()) renderMarkets(); });
+}, 5000);
+$("mktQ").addEventListener("input", () => { mktQuery = $("mktQ").value; renderMarkets(); });
+$("mktTabs").onclick = e => {
+  const b = e.target.closest("a"); if (!b || !b.dataset.quote) return;
+  e.preventDefault();
+  quoteTab = b.dataset.quote;
+  $("mktTabs").querySelectorAll("a").forEach(x => x.classList.toggle("on", x === b));
+  scheduleList();
+};
+$("mktHead").onclick = e => {
+  const k = e.target.dataset.k; if (!k) return;
+  if (mktSort.key === k) mktSort.dir *= -1;
+  else mktSort = { key: k, dir: k === "name" ? 1 : -1 };
+  renderMarkets();
+};
+$("mktList").onclick = e => {
+  const row = e.target.closest(".mrow"); if (!row) return;
+  $("market").value = row.dataset.m;
+  $("apply").click();
+};
+
+new ResizeObserver(resize).observe(canvas);
+(async () => {
+  scheduleList();
+  try {
+    await fetchAll(() => { renderTo(all.length); resize(); });
+    $("range").value = String(all.length);
+    renderTo(all.length);
+    resize();
+  }
+  catch(e) {
+    $("status").textContent = e.message;
+    if ($("mktNote") && !$("mktList").children.length) $("mktNote").textContent = e.message;
+    resize();
+  }
+})();
+
+
+
+</script>
+</body>
+</html>
