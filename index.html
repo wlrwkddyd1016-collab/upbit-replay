@@ -288,8 +288,9 @@
 </div>
 <script>
 const API = "https://api.upbit.com/v1";
+const RELAY = "https://upbit-relay.wlrwkddyd1016.workers.dev/v1";
 async function apiFetch(path) {
-  const urls = ["/upbit" + path, API + path];
+  const urls = [RELAY + path, API + path];
   let last = "시세 연결 실패";
   for (const url of urls) {
     try {
