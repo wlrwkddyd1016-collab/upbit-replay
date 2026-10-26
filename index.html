@@ -68,9 +68,10 @@
     .ex-view { height: 33px; overflow: hidden; }
     .ex-track { will-change: transform; }
     .ex-page { height: 33px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; }
-    .ex-page span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ex b { color: #d6d8db; font-weight: 500; margin: 0 6px; }
-    .ex .usd { color: #8e929b; }
+    .ex-page span { display: flex; align-items: baseline; white-space: nowrap; overflow: hidden; }
+    .ex .exn { font-style: normal; color: #3f8ac9; margin-right: 10px; }
+    .ex b { color: #d6d8db; font-weight: 500; margin-right: 7px; }
+    .ex .usd { font-style: normal; color: #8e929b; font-size: 12px; }
     .topbar {
       flex: 0 0 38px; height: 38px; display: flex; align-items: center; gap: 2px;
       padding: 0 8px 0 10px; background: #0d192a; font-size: 13px; color: #8e929b;
@@ -1642,12 +1643,16 @@ function setEx(id, usd, fx) {
   el.innerHTML = krw.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
     ' <span class="usd">($' + usd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ")</span>";
 }
+// 업비트와 같은 순서: 달러 → 유로 → 파운드
 const EX_PAGES = [
-  { quote: "EUR", mark: "€", venues: ["Binance", "Coinbase", "Kraken"] },
-  { quote: "GBP", mark: "£", venues: ["Coinbase", "Kraken"] },
   { quote: "USD", mark: "$", venues: ["Coinbase", "Bitfinex", "Kraken"] },
-  { quote: "JPY", mark: "¥", venues: ["BitFlyer"] }
+  { quote: "EUR", mark: "€", venues: ["Binance", "Coinbase", "Kraken"] },
+  { quote: "GBP", mark: "£", venues: ["Coinbase", "Kraken"] }
 ];
+// 해외 거래소 주소: 브라우저에서 바로 부를 수 있는 곳은 직접, 막힌 곳(Bitfinex·bitFlyer·업비트 환율)은 중계 서버로
+const EX_HOSTS = { "/bn/": "https://api.binance.com/", "/cbs/": "https://api.coinbase.com/", "/cb/": "https://api.exchange.coinbase.com/",
+  "/kraken/": "https://api.kraken.com/", "/fx/": "https://api.frankfurter.dev/v1/" };
+const RELAY_ROOT = RELAY.replace(/\/v1$/, "");
 let bookPromise = null;
 function exchangeBooks() {
   if (!bookPromise) bookPromise = buildExchangeBooks();
@@ -1656,15 +1661,17 @@ function exchangeBooks() {
 async function buildExchangeBooks() {
   const book = { Binance: new Set(), Coinbase: new Set(), Kraken: {}, Bitfinex: new Set(), BitFlyer: new Set() };
   const grab = async (url) => {
-    const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
+    if (url.startsWith("/upbit/")) return (await apiFetch(url.slice(6))).json();
+    const host = Object.keys(EX_HOSTS).find(p => url.startsWith(p));
+    const res = await fetch(host ? EX_HOSTS[host] + url.slice(host.length) : RELAY_ROOT + url, { signal: AbortSignal.timeout(20000) });
     if (!res.ok) throw new Error(String(res.status));
     return res.json();
   };
   try {
-    const j = await grab("/bn/api/v3/exchangeInfo");
-    for (const s of j.symbols || []) {
-      if (s.status !== "TRADING") continue;
-      if (s.quoteAsset === "EUR") book.Binance.add(s.baseAsset + "/EUR");
+    // 거래 중인 종목 시세 목록 (exchangeInfo는 10MB가 넘어서 가벼운 이 목록을 쓴다)
+    const rows = await grab("/bn/api/v3/ticker/price");
+    for (const s of rows || []) {
+      if (s.symbol.endsWith("EUR") && s.symbol.length > 3) book.Binance.add(s.symbol.slice(0, -3) + "/EUR");
     }
   } catch (e) {}
   try {
@@ -1769,7 +1776,7 @@ function paintEx(pages) {
   track.style.transition = "none";
   track.style.transform = "translateY(0)";
   track.innerHTML = pages.map(page =>
-    '<div class="ex-page">' + page.map(it => "<span>" + it.name + " <b>" + it.text + "</b></span>").join("") + "</div>"
+    '<div class="ex-page">' + page.map(it => '<span><i class="exn">' + it.name + "</i><b>" + it.krw + '</b><em class="usd">' + it.foreign + "</em></span>").join("") + "</div>"
   ).join("");
   if (pages.length < 2) return;
   exTimer = setInterval(() => {
@@ -1794,21 +1801,21 @@ async function loadExchanges(sym, day) {
     if (venues.length) slots.push({ quote: page.quote, mark: page.mark, venues });
   }
   if (!slots.length) { paintEx([]); return; }
+  // 원화 환율: 오늘은 업비트가 쓰는 환율, 과거 날짜는 그날 유럽중앙은행 기준 환율
   let rates = { USD: 0, EUR: 0, GBP: 0, JPY: 0 };
   try {
-    const fxUrl = live ? "/fx/latest?from=USD&to=EUR,GBP,JPY" : "/fx/" + day + "?from=USD&to=EUR,GBP,JPY";
-    const fx = await grab(fxUrl);
-    const r = fx.rates || {};
-    const krwRows = live
-      ? await grab("/upbit/ticker?markets=KRW-USDT")
-      : await grab("/upbit/candles/days?market=KRW-USDT&count=1&to=" + encodeURIComponent(iso(end).replace("Z", "")));
-    const krw = +krwRows[0].trade_price;
-    rates = {
-      USD: krw,
-      EUR: r.EUR ? krw / r.EUR : 0,
-      GBP: r.GBP ? krw / r.GBP : 0,
-      JPY: r.JPY ? krw / r.JPY : 0
-    };
+    if (live) {
+      const rows = await grab("/forex/recent?codes=FRX.KRWUSD,FRX.KRWEUR,FRX.KRWGBP,FRX.KRWJPY");
+      for (const r of rows) rates[r.currencyCode] = r.basePrice / (r.currencyUnit || 1);
+    } else {
+      const r = (await grab("/fx/" + day + "?from=USD&to=KRW,EUR,GBP,JPY")).rates || {};
+      rates = {
+        USD: r.KRW || 0,
+        EUR: r.EUR ? r.KRW / r.EUR : 0,
+        GBP: r.GBP ? r.KRW / r.GBP : 0,
+        JPY: r.JPY ? r.KRW / r.JPY : 0
+      };
+    }
   } catch (e) {}
   const pages = [];
   for (const page of slots) {
@@ -1820,15 +1827,27 @@ async function loadExchanges(sym, day) {
       const per = rates[page.quote] || 0;
       if (!(foreign > 0) || !(per > 0)) continue;
       const krw = foreign * per;
-      const text = krw.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
-        ' <span class="usd">(' + page.mark + foreign.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ")</span>";
-      cells.push({ name: venue, text });
+      // 원화가는 업비트 호가 단위보다 한 자리 더 (1,706.0 / 50.97)
+      const t = tickOf(krw);
+      const digits = (t >= 1 ? 0 : Math.min(8, Math.round(-Math.log10(t)))) + 1;
+      cells.push({
+        name: venue,
+        krw: krw.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits }),
+        foreign: "(" + page.mark + foreign.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ")"
+      });
     }
     if (cells.length) pages.push(cells);
   }
   if (exKey !== key) return;
   paintEx(pages);
 }
+// 오늘 시세를 보고 있으면 1분마다 해외 시세를 다시 받는다.
+setInterval(() => {
+  if (!exKey || !isLiveList()) return;
+  const [sym, day] = exKey.split("|");
+  exKey = "";
+  loadExchanges(sym, day);
+}, 60000);
 async function loadTickers(markets) {
   const out = {};
   for (let i = 0; i < markets.length; i += 80) {
