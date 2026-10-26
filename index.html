@@ -45,25 +45,29 @@
     .inforTab span { display: block; box-sizing: border-box; width: 140px; height: 45px; margin: 0; padding: 0; border: 0; line-height: 45px; text-align: center; white-space: nowrap; cursor: pointer; text-decoration: none; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 700; color: #d2d4d6; }
     .inforTab .on { color: #0062df; border-bottom: 2.56px solid #0062df; }
     .gear { box-sizing: border-box; position: relative; display: block; align-self: flex-end; width: 44px; height: 44px; margin: 0; padding: 0; overflow: hidden; border: 0; border-left: 1px solid #1e2939; color: #333; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; line-height: normal; text-indent: -119988px; text-decoration: none; vertical-align: top; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DLbiqYLm.svg) no-repeat center; }
-    .marketB { position: relative; display: flex; align-items: center; margin: 0; padding: 0 20px; color: #d2d4d6; height: 87px; }
-    #spark { width: 140px; height: 50px; display: block; flex: 0 0 140px; margin: 0 30px 0 0; padding: 0; border: 0; background: transparent; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .marketB { position: relative; display: flex; align-items: flex-start; margin: 0; padding: 18px 20px 0; color: #d2d4d6; height: 87px; }
+    #spark { width: 140px; height: 50px; display: block; flex: 0 0 140px; margin: 2px 30px 0 0; padding: 0; border: 0; background: transparent; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
     .px.up { color: #dd3c44; } .px.down { color: #1375ec; }
     .px { flex: 0 0 320px; }
     .px .big { display: inline-block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 39.04px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 32px; font-weight: 500; font-style: normal; line-height: normal; letter-spacing: normal; }
     .px em { display: inline-block; box-sizing: content-box; margin: 0 4px 0 2px; padding: 0; border: 0; height: 16.64px; color: inherit; font-style: normal; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 14px; font-weight: 400; line-height: normal; }
-    .px .chg { margin-top: 6px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 500; line-height: normal; }
+    .px .first { margin: -6px 0 1px; }
+    .px .chg { margin-top: 0; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 500; line-height: normal; }
     .px .chg strong { display: inline-block; box-sizing: content-box; height: 19.2px; margin: 0; padding: 0; color: inherit; font-size: 16px; font-weight: 500; line-height: normal; }
     .px .chg .upDown { display: inline-block; box-sizing: content-box; height: 19.2px; margin: 0 0 0 6px; padding: 0 0 0 14px; border: 0; color: inherit; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 500; font-style: normal; line-height: normal; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DNyDWqo1.png) 0 50% no-repeat; }
     .px.up .chg .upDown { background-image: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-ClHWRj2a.png); }
-    .kv { flex: 1 1 0; display: grid; grid-template-columns: auto 1fr; column-gap: 16px; row-gap: 0; align-items: start; font-size: 12px; padding-right: 8px; min-width: 0; }
+    /* 업비트: 고가·저가 칸 210 + 간격 20 + 거래량·거래대금 칸 230, 이름과 값 사이 밑줄은 끊김 없이 한 줄 */
+    .kv { flex: 0 0 210px; display: grid; grid-template-columns: auto 1fr; column-gap: 0; row-gap: 0; align-items: start; font-size: 12px; min-width: 0; }
+    .kv + .kv { flex-basis: 230px; margin-left: 20px; }
     .kv .k { box-sizing: content-box; display: block; height: 18px; margin: 0; padding: 0; border: 0; color: #d2d4d6; font-family: Roboto, "Noto Sans KR", sans-serif, Arial, Helvetica; font-size: 12px; font-weight: 400; line-height: 18px; white-space: nowrap; }
-    .kv .k:nth-child(1), .kv > :nth-child(2) { margin-bottom: 9px; padding-bottom: 9px; border-bottom: 0.64px solid #1e2939; }
+    .kv .k:nth-child(1), .kv > :nth-child(2) { margin-bottom: 9px; padding-bottom: 9px; border-bottom: 1px solid #1e2939; }
     .kv .hi, .kv .lo, .kv .v { box-sizing: content-box; height: 18px; line-height: 18px; text-align: right; font-weight: 500; font-size: 14px; }
     .kv .hi strong, .kv .lo strong { display: inline-block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 18px; line-height: 18px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 14px; font-weight: 500; font-style: normal; text-align: right; word-break: break-all; }
     .kv .hi strong { color: #dd3c44; }
     .kv .lo strong { color: #1375ec; }
-    .kv .v { color: #d6d8db; }
-    .kv .unit { color: #8e929b; font-weight: 400; margin-left: 4px; font-size: 12px; }
+    .kv .v { color: #d6d8db; font-weight: 400; }
+    #headAmt { font-size: 12px; }
+    .kv .unit { color: #8e929b; font-weight: 400; margin-left: 3px; font-size: 11px; }
     .ex { margin: 0; color: #d2d4d6; display: block; width: 100%; height: 33px; padding: 0 20px; background: #0c1727; font-size: 13px; overflow: hidden; }
     .ex-view { height: 33px; overflow: hidden; }
     .ex-track { will-change: transform; }
@@ -511,7 +515,10 @@ function paintQuote(last, prev) {
   const unitEl = $("pxBox").querySelector("em");
   if (unitEl) unitEl.textContent = quote;
   $("headPct").textContent = (pc < 0 ? "" : "+") + pc.toFixed(2) + "%";
-  $("headDelta").textContent = (dn ? "-" : "+") + headNum(Math.abs(dlt));
+  // 업비트: 변동폭은 현재가와 같은 자릿수, 오를 때는 + 없이 (▲0.7 / ▼-0.5)
+  const pxTick = tickOf(px);
+  const pxDigits = pxTick >= 1 ? 0 : Math.min(8, Math.round(-Math.log10(pxTick)));
+  $("headDelta").textContent = (dn ? "-" : "") + Math.abs(dlt).toLocaleString("en-US", { minimumFractionDigits: pxDigits, maximumFractionDigits: pxDigits });
   $("headHi").textContent = headNum(live ? tick.high : last.high);
   $("headLo").textContent = headNum(live ? tick.low : last.low);
   $("headVol").innerHTML = headQty(live ? tick.vol : last.volume, sym);
