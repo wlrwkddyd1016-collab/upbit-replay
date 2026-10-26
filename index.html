@@ -154,22 +154,31 @@
     .mkts-tabs span { flex: 0 0 80px; width: 80px; }
     .mkts-tabs a { display: block; width: 100%; box-sizing: content-box; height: 44px; line-height: 42px; margin: 0; padding: 0; border: 0; border-bottom: 1px solid #1e2939; text-decoration: none; text-align: center; font-family: Roboto, "Noto Sans KR", Dotum, "돋움", sans-serif; font-size: 14px; font-weight: 500; color: #d2d4d6; cursor: pointer; }
     .mkts-tabs a.on { height: 42px; font-weight: 700; color: #0062df; border-bottom: 3px solid #0062df; }
-    .mkts-head, .mrow { display: grid; grid-template-columns: 20px 22px 104px 88px 78px 88px; gap: 0; align-items: center; padding: 0; }
-    .mkts-head { width: 100%; height: 30px; margin: 0; background: #141a24; color: #858b95; font-size: 11px; }
-    .mkts-head span { cursor: pointer; text-align: right; }
-    .mkts-head span[data-k="name"], .mrow .nm { text-align: left; }
+    /* 업비트 시세표: 제목줄 칸 146·88·78·88(글자 가운데 + 정렬 화살표), 코인 줄 칸 별 26·막대 26·이름 94·현재가 98·전일대비 58·거래대금 98 */
+    .mkts-head { display: grid; grid-template-columns: 146px 88px 78px 88px; width: 100%; height: 30px; margin: 0; padding: 0; background: #141a24; color: #858b95; font-size: 11px; }
+    .mkts-head span:empty { display: none; }
+    .mkts-head span { display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .mkts-head span::after { content: ""; width: 5px; height: 10px; margin-left: 3px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='10'%3E%3Cpath d='M2.5 0L5 4H0zM2.5 10L0 6h5z' fill='%23565d6a'/%3E%3C/svg%3E"); }
+    .mrow { display: grid; grid-template-columns: 26px 26px 94px 98px 58px 98px; gap: 0; align-items: start; padding: 0; }
+    .mrow .nm { text-align: left; min-width: 0; padding-top: 6px; line-height: 16px; white-space: nowrap; }
+    .mrow .sym { line-height: 14px; margin-top: 1px; }
+    .mrow .px { padding: 7px 4px 0 0; line-height: 16px; }
+    .mrow .chg { padding-top: 7px; line-height: 16px; }
+    .mrow .amt { padding: 9px 14px 0 0; line-height: 16px; }
+    .mrow .star { width: 12px; height: 12px; margin: 15px 0 0 14px; fill: none; stroke: #565d6a; stroke-width: 1; }
+    .mrow .bar { margin-top: 9.5px; }
     .mkts-list { flex: 1; overflow: auto; min-height: 0; width: 100%; margin: 0; padding: 0; color: #d2d4d6; scrollbar-width: none; }
     /* 업비트처럼 스크롤바는 숨기고 마우스 휠 스크롤은 그대로 */
     .mkts-list::-webkit-scrollbar { display: none; }
     .mrow { height: 45px; border-top: 1px solid #1a2434; cursor: pointer; font-size: 12px; }
     .mrow:hover, .mrow.on { background: #0d192a; }
-    .mrow .nm strong { font-weight: 700; color: #d6d8db; }
+    .mrow .nm strong { font-weight: 500; color: #d6d8db; }
     .mrow .sym { color: #8e929b; font-size: 11px; }
-    .mrow .px, .mrow .chg { font-weight: 700; text-align: right; }
+    .mrow .px { font-weight: 500; text-align: right; }
+    .mrow .chg { font-weight: 400; text-align: right; }
     .mrow .amt { text-align: right; color: #d6d8db; font-size: 12px; }
-    .mrow .amt i { font-style: normal; color: #8e929b; font-size: 11px; margin-left: 1px; }
+    .mrow .amt i { font-style: normal; color: #8e929b; font-size: 11px; }
     .mrow .up { color: #dd3c44; } .mrow .down { color: #1375ec; } .mrow .flat { color: #8e929b; }
-    .star { color: #565d6a; font-size: 13px; }
     .bar { position: relative; width: 14px; height: 24px; margin: 0 auto; }
     .bar .line, .bar .box { position: absolute; left: 6px; width: 1px; background: #8e929b; }
     .bar .box { left: 4px; width: 5px; }
@@ -1683,12 +1692,13 @@ function renderMarkets() {
   $("mktNote").textContent = loaded + " / " + rows.length + " · " + when;
   box.innerHTML = rows.map(({ m, sym, rec }) => {
     const cls = rec ? (rec.chg > 0 ? "up" : rec.chg < 0 ? "down" : "flat") : "flat";
-    const px = rec ? (quoteTab === "KRW" ? fmt(rec.price) : rec.price.toLocaleString("en-US", { maximumFractionDigits: 8 })) : "-";
+    // 업비트 시세표 현재가는 호가 단위 자릿수 그대로 (370 / 1,720 / 46.3)
+    const px = rec ? (quoteTab === "KRW" ? headNum(rec.price) : rec.price.toLocaleString("en-US", { maximumFractionDigits: 8 })) : "-";
     const chg = rec ? (rec.chg > 0 ? "+" : "") + rec.chg.toFixed(2) + "%" : "-";
     const amt = rec ? amtHtml(rec.amount, quoteTab) : "-";
     const bdg = m.market_warning === "CAUTION" ? '<i class="bdg">유</i>' : "";
     return '<div class="mrow' + (m.market === active ? " on" : "") + '" data-m="' + m.market + '">' +
-      '<span class="star">☆</span>' + miniBar(rec) +
+      '<svg class="star" viewBox="0 0 12 12"><path d="M6 1.2l1.45 2.95 3.25.47-2.35 2.3.55 3.24L6 8.63 3.1 10.16l.55-3.24L1.3 4.62l3.25-.47z"/></svg>' + miniBar(rec) +
       '<div class="nm"><strong>' + m.korean_name + '</strong>' + bdg + '<div class="sym">' + sym + '/' + quoteTab + '</div></div>' +
       '<div class="px ' + cls + '">' + px + '</div>' +
       '<div class="chg ' + cls + '">' + chg + '</div>' +
