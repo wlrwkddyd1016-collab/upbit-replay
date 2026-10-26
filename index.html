@@ -17,36 +17,37 @@
       --theme-colors-accent_main: #0062df;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; overflow: hidden; background: #000; color: #d2d4d6;
+    html, body { margin: 0; min-height: 100%; background: #000; color: #d2d4d6;
       font-family: var(--theme-font); font-size: 100%; }
-    .app { width: 100%; margin: 0; padding: 0; border: 0; color: #d2d4d6; height: 100dvh; max-height: 100dvh; overflow: hidden; display: flex; flex-direction: column; background: #000; }
+    /* 업비트 거래소 화면 치수: 상단바 60, 본문 1400 가운데 정렬(왼쪽 990 + 간격 10 + 오른쪽 400) */
+    .app { min-width: 1400px; margin: 0; padding: 0; border: 0; color: #d2d4d6; display: flex; flex-direction: column; background: #000; }
     .replaybar {
-      flex: 0 0 auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
-      padding: 8px 12px; background: #0d192a; border-bottom: 1px solid #000; font-size: 12px;
+      flex: 0 0 auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; min-height: 60px;
+      padding: 8px max(12px, calc((100% - 1400px) / 2)); background: #0d192a; border-bottom: 1px solid #000; font-size: 12px;
     }
     .replaybar input, .replaybar button, .replaybar select {
       background: #05111e; color: #d6d8db; border: 1px solid #313b4b;
       border-radius: 4px; padding: 5px 8px; font-size: 12px;
     }
     .replaybar button.go { background: #0062df; border-color: #0062df; color: #fff; font-weight: 700; }
-    .stage { flex: 1; display: flex; gap: 6px; min-width: 0; min-height: 0; background: #000; padding: 6px; }
-    .trade { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; min-height: 0; background: transparent; }
+    .stage { flex: 0 0 auto; display: flex; align-items: flex-start; gap: 10px; width: 1400px; margin: 0 auto; background: #000; padding: 12px 0 10px; }
+    .trade { flex: 0 0 990px; width: 990px; display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 0; background: transparent; }
     .upbit-head { flex: 0 0 auto; padding: 0; background: #05111e; border: 0; }
-    .titB { width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 0; margin: 0; padding: 0; border: 0; border-bottom: 1px solid #1a2434; color: #d2d4d6; min-height: 52px; }
-    .titB .select { display: flex; align-items: center; margin: 0; padding: 0 0 0 16px; color: inherit; text-decoration: none; min-width: 0; }
-    .titB img { width: 28px; height: 28px; border-radius: 50%; background: #0c1727; margin-right: 8px; }
+    .titB { width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 0; margin: 0; padding: 0 0 0 14px; border: 0; box-shadow: inset 0 -1px 0 #1a2434; color: #d2d4d6; height: 45px; }
+    .titB .select { display: flex; align-items: center; margin: 0; padding: 0; color: inherit; text-decoration: none; min-width: 0; }
+    .titB img { width: 26px; height: 26px; border-radius: 50%; background: #0c1727; margin-right: 10px; }
     .titB .who { display: flex; align-items: baseline; gap: 0; min-width: 0; }
     .titB strong { display: block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 20px; color: #d2d4d6; cursor: pointer; font-family: Roboto, "Noto Sans KR", Dotum, "돋움", sans-serif, Arial, Helvetica; font-size: 20px; font-weight: 700; font-style: normal; line-height: 20px; white-space: nowrap; }
     .titB p { display: block; box-sizing: content-box; margin: 0 4px; padding: 0; border: 0; height: 14.72px; color: #d2d4d6; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; font-style: normal; line-height: normal; white-space: nowrap; }
     .titB .arrow { box-sizing: content-box; display: block; width: 13px; height: 44px; margin: 0; padding: 0 8px; overflow: hidden; border: 0; color: #333; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; line-height: normal; text-indent: -11988px; text-decoration: none; vertical-align: top; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DSlPD5Zf.png) no-repeat 50% 20px; }
-    .inforTab { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; height: 52px; }
+    .inforTab { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; height: 45px; }
     .inforTab span { display: block; box-sizing: border-box; width: 140px; height: 45px; margin: 0; padding: 0; border: 0; line-height: 45px; text-align: center; white-space: nowrap; cursor: pointer; text-decoration: none; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 700; color: #d2d4d6; }
     .inforTab .on { color: #0062df; border-bottom: 2.56px solid #0062df; }
     .gear { box-sizing: border-box; position: relative; display: block; align-self: flex-end; width: 44px; height: 44px; margin: 0; padding: 0; overflow: hidden; border: 0; border-left: 1px solid #1e2939; color: #333; cursor: pointer; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 12px; font-weight: 400; line-height: normal; text-indent: -119988px; text-decoration: none; vertical-align: top; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DLbiqYLm.svg) no-repeat center; }
-    .marketB { position: relative; display: flex; align-items: center; margin: 0; padding: 18px 20px 14px; color: #d2d4d6; min-height: 87px; }
-    #spark { width: 140px; height: 50px; display: block; flex: 0 0 140px; margin: 0 16px; padding: 0; border: 0; background: transparent; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .marketB { position: relative; display: flex; align-items: center; margin: 0; padding: 0 20px; color: #d2d4d6; height: 87px; }
+    #spark { width: 140px; height: 50px; display: block; flex: 0 0 140px; margin: 0 30px 0 0; padding: 0; border: 0; background: transparent; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
     .px.up { color: #dd3c44; } .px.down { color: #1375ec; }
-    .px { flex: 0 0 220px; }
+    .px { flex: 0 0 320px; }
     .px .big { display: inline-block; box-sizing: content-box; margin: 0; padding: 0; border: 0; height: 39.04px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 32px; font-weight: 500; font-style: normal; line-height: normal; letter-spacing: normal; }
     .px em { display: inline-block; box-sizing: content-box; margin: 0 4px 0 2px; padding: 0; border: 0; height: 16.64px; color: inherit; font-style: normal; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 14px; font-weight: 400; line-height: normal; }
     .px .chg { margin-top: 6px; font-family: Roboto, "Noto Sans KR", sans-serif, AppleSDGothicNeo-Regular, "Malgun Gothic", Dotum, sans-serif; font-size: 16px; font-weight: 500; line-height: normal; }
@@ -84,7 +85,8 @@
     .rad { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; color: #d6d8db; }
     .rad i { width: 14px; height: 14px; border: 1.5px solid #565d6a; border-radius: 50%; display: inline-block; }
     .rad.on i { border-color: #fff; background: radial-gradient(circle, #fff 0 3px, transparent 4px); }
-    .chart-wrap { flex: 1; display: flex; flex-direction: row; gap: 6px; min-width: 0; min-height: 0; background: transparent; }
+    /* 업비트 트레이딩뷰 영역 높이 452 = 상단 도구줄 38 + 간격 4 + 차트 410 */
+    .chart-wrap { flex: 0 0 410px; height: 410px; display: flex; flex-direction: row; gap: 4px; min-width: 0; min-height: 0; background: transparent; }
     .sidebar { width: 52px; flex: 0 0 52px; background: #0c1727; display: flex; position: relative; user-select: none; }
     .toolgroup { width: 52px; height: 100%; padding: 8px 0 12px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; color: #d6d8db; }
     .sidebar .ico { width: 40px; height: 32px; border-radius: 6px; display: grid; place-items: center; color: #d6d8db; }
@@ -117,14 +119,14 @@
     .bottom .sp { flex: 1; }
     .auto { color: #d6d8db; }
     .status { color: #8e929b; font-size: 11px; margin-left: 8px; }
-    .mkts { width: 400px; flex: 0 0 400px; background: #0c1727; display: flex; flex-direction: column; min-height: 0; color: #d6d8db; }
-    .mkts-top { display: flex; align-items: stretch; height: 42px; }
+    .mkts { width: 400px; flex: 0 0 400px; height: 1118px; background: #0c1727; display: flex; flex-direction: column; min-height: 0; color: #d6d8db; }
+    .mkts-top { display: flex; align-items: stretch; height: 43px; border-bottom: 1px solid #1e2939; }
     .mkts-search { position: relative; flex: 1; overflow: hidden; box-sizing: content-box; width: 332px; height: 26px; margin: 0; border: 0; border-right: 1px solid #1e2939; padding: 8px 9px 8px 14px; color: #d2d4d6; display: flex; align-items: center; gap: 6px; }
     .mkts-search input { flex: 1; min-width: 0; height: 26px; margin: 0; padding: 0; border: 0; background: transparent; color: #d2d4d6; font: inherit; font-size: 13px; outline: none; }
     .mkts-search input::placeholder { color: #8e929b; }
     .mkts-search .lens { color: #8e929b; font-size: 16px; line-height: 1; }
     .mkt-set { margin: 0; padding: 0; border: 0; color: #333; text-decoration: none; position: relative; display: block; overflow: hidden; flex: 0 0 44px; width: 44px; height: 100%; text-indent: -9999em; cursor: pointer; background: url(https://upbit-web-dist.upbit.com/upbit-web/sri-v2-DLbiqYLm.svg) no-repeat center; }
-    .mkts-tabs { display: flex; margin: 0; padding: 0; border-bottom: 1px solid #1a2434; }
+    .mkts-tabs { display: flex; margin: 0; padding: 0; }
     .mkts-tabs span { flex: 0 0 80px; width: 80px; }
     .mkts-tabs a { display: block; width: 100%; box-sizing: content-box; height: 44px; line-height: 42px; margin: 0; padding: 0; border: 0; border-bottom: 1px solid #1e2939; text-decoration: none; text-align: center; font-family: Roboto, "Noto Sans KR", Dotum, "돋움", sans-serif; font-size: 14px; font-weight: 500; color: #d2d4d6; cursor: pointer; }
     .mkts-tabs a.on { height: 42px; font-weight: 700; color: #0062df; border-bottom: 3px solid #0062df; }
