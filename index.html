@@ -31,7 +31,8 @@
     }
     .replaybar button.go { background: #0062df; border-color: #0062df; color: #fff; font-weight: 700; }
     .stage { flex: 0 0 auto; display: flex; align-items: flex-start; gap: 10px; width: 1400px; margin: 0 auto; background: #000; padding: 12px 0 10px; }
-    .trade { flex: 0 0 990px; width: 990px; display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 0; background: transparent; }
+    .leftcol { flex: 0 0 990px; width: 990px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .trade { flex: 0 0 auto; width: 990px; display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 0; background: transparent; }
     .upbit-head { flex: 0 0 auto; padding: 0; background: #05111e; border: 0; }
     .titB { width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 0; margin: 0; padding: 0 0 0 14px; border: 0; box-shadow: inset 0 -1px 0 #1a2434; color: #d2d4d6; height: 45px; }
     .titB .select { display: flex; align-items: center; margin: 0; padding: 0; color: inherit; text-decoration: none; min-width: 0; }
@@ -151,6 +152,83 @@
     .bar.down .line, .bar.down .box { background: #1375ec; }
     .bdg { display: inline-block; margin-left: 4px; padding: 0 3px; border-radius: 2px; background: #dd3c44; color: #fff; font-style: normal; font-size: 10px; }
     .mkts-note { color: #8e929b; font-size: 11px; padding: 4px 12px 8px; }
+    /* 업비트 호가·주문 영역 990 x 883: 왼쪽 호가창 490 + 간격 10 + 오른쪽 주문창 490 */
+    .halfB { display: flex; gap: 10px; height: 883px; }
+    .obk { flex: 0 0 490px; width: 490px; height: 883px; background: #0c1727; display: flex; flex-direction: column; color: #d6d8db; font-size: 12px; }
+    .ob-head, .of-tabs, .dp-tabs { flex: 0 0 45px; height: 45px; display: flex; border-bottom: 1px solid #1e2939; }
+    .ob-tabs { display: flex; width: 328px; }
+    .ob-tabs a, .of-tabs a, .dp-tabs a { flex: 1; display: block; height: 44px; line-height: 44px; text-align: center; font-size: 16px; font-weight: 500; color: #d2d4d6; text-decoration: none; cursor: pointer; white-space: nowrap; }
+    .ob-tabs a.on, .dp-tabs a.on, .of-tabs a.on { line-height: 41px; font-weight: 700; color: #0062df; border-bottom: 3px solid #0062df; }
+    .of-tabs a.buy.on { color: #dd3c44; border-color: #dd3c44; }
+    .ob-filter { flex: 1; display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; color: #d2d4d6; }
+    .ob-filter::after { content: "▾"; margin-left: 4px; color: #8e929b; font-size: 10px; }
+    .ob-scroll { flex: 0 0 793px; height: 793px; overflow-y: auto; scrollbar-width: none; }
+    .ob-scroll::-webkit-scrollbar { display: none; }
+    .ob-asks, .ob-bids { position: relative; }
+    .ob-row { display: grid; width: 328px; height: 45px; border-bottom: 1px solid #0c1727; }
+    .ob-row > div { border-right: 1px solid #0c1727; min-width: 0; }
+    .ob-asks .ob-row { grid-template-columns: 42px 120px 166px; background: rgba(19, 117, 236, .12); }
+    .ob-bids .ob-row { grid-template-columns: 166px 120px 42px; margin-left: 162px; background: rgba(221, 60, 68, .12); }
+    .ob-qty { position: relative; display: flex; align-items: center; }
+    .ob-asks .ob-qty { justify-content: flex-end; padding-right: 8px; }
+    .ob-bids .ob-qty { justify-content: flex-start; padding-left: 8px; }
+    .ob-bar { position: absolute; top: 9px; height: 26px; }
+    .ob-asks .ob-bar { right: 0; background: rgba(19, 117, 236, .35); }
+    .ob-bids .ob-bar { left: 0; background: rgba(221, 60, 68, .35); }
+    .ob-qty span { position: relative; }
+    .ob-px { display: flex; align-items: center; cursor: pointer; color: #d6d8db; }
+    .ob-px b { flex: 1; text-align: right; padding-right: 14px; font-size: 13px; font-weight: 500; }
+    .ob-px i { flex: 0 0 54px; padding-right: 6px; text-align: right; font-style: normal; font-size: 12px; }
+    .ob-px.up { color: #dd3c44; } .ob-px.down { color: #1375ec; }
+    .ob-px.cur { outline: 1px solid #d6d8db; outline-offset: -1px; }
+    .ob-info { position: absolute; right: 0; bottom: 0; width: 162px; height: 276px; padding: 0 8px; }
+    .ob-info dl, .ob-trd dl { margin: 0; padding: 8px 0 4px; border-top: 1px solid #1e2939; }
+    .ob-info dl:first-child { border-top: 0; }
+    .ob-info .r { display: flex; margin: 0 0 6px; font-size: 11px; line-height: 16px; }
+    .ob-info dt, .ob-trd dt { flex: 0 0 58px; color: #8e929b; }
+    .ob-info dd, .ob-trd dd { flex: 1; margin: 0; text-align: right; }
+    .ob-info dd i { font-style: normal; color: #8e929b; font-size: 10px; }
+    .ob-info dd em { display: block; font-style: normal; color: #8e929b; }
+    .ob-info .up, .ob-trd .up { color: #dd3c44; } .ob-info .down, .ob-trd .down { color: #1375ec; }
+    .ob-trd { position: absolute; left: 0; top: 0; width: 162px; height: 450px; overflow: hidden; }
+    .ob-trd dl { display: flex; align-items: center; height: 30px; padding: 0 8px; border-top: 0; font-size: 11px; }
+    .ob-trd table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .ob-trd th { height: 31px; background: #141a24; color: #8e929b; font-weight: 400; }
+    .ob-trd td { height: 20px; padding: 6px 8px 0 14px; text-align: right; }
+    .ob-trd td + td { padding: 6px 8px 0 0; }
+    .ob-total { flex: 0 0 45px; display: grid; grid-template-columns: 42px 120px 166px 120px 42px; align-items: center; background: #141a24; border-top: 1px solid #1e2939; }
+    .ob-total .ra { text-align: right; padding-right: 8px; } .ob-total .la { padding-left: 8px; }
+    .ob-total .mid { text-align: center; font-weight: 700; } .ob-total .mid i { font-style: normal; font-weight: 400; font-size: 11px; }
+    .ordB { flex: 0 0 490px; width: 490px; display: flex; flex-direction: column; gap: 10px; }
+    .ofm { position: relative; height: 485px; background: #0c1727; color: #d6d8db; }
+    .of-body { position: relative; height: 440px; font-size: 14px; }
+    .of-body > * { position: absolute; }
+    .of-lab { left: 24px; color: #8e929b; white-space: nowrap; }
+    .of-lab small { font-size: 12px; color: #565d6a; margin-left: 2px; }
+    .of-radio { display: flex; gap: 0; top: 31px; left: 177px; font-size: 13px; color: #8e929b; }
+    .of-radio span { display: inline-flex; align-items: center; gap: 6px; margin-right: 22px; cursor: pointer; }
+    .of-radio span::before { content: ""; width: 12px; height: 12px; border: 1.5px solid #565d6a; border-radius: 50%; }
+    .of-radio span.on { color: #0062df; }
+    .of-radio span.on::before { border-color: #0062df; background: radial-gradient(circle, #0062df 0 3px, transparent 4px); }
+    .of-avail { top: 72px; right: 24px; font-weight: 700; }
+    .of-avail small { color: #8e929b; margin-left: 4px; font-size: 14px; }
+    .of-in { left: 177px; width: 276px; height: 38px; padding: 0 10px; border: 1px solid #313b4b; border-radius: 2px; background: transparent; color: #d6d8db; font: inherit; font-size: 14px; text-align: right; outline: none; }
+    .of-in:focus { border-color: #0062df; }
+    #ofPrice { width: 212px; }
+    .of-step { top: 134px; width: 20px; height: 20px; border: 0; background: none; color: #8e929b; font-size: 18px; line-height: 20px; padding: 0; cursor: pointer; }
+    .of-pct { top: 222px; left: 164px; display: flex; gap: 4px; }
+    .of-pct a { display: block; width: 56px; height: 28px; line-height: 26px; border: 1px solid #313b4b; border-radius: 4px; text-align: center; font-size: 12px; color: #d6d8db; cursor: pointer; }
+    .of-pct a:last-child { width: 64px; margin-left: 3px; }
+    .of-note { top: 356px; right: 24px; font-size: 11px; color: #8e929b; }
+    .of-btn { top: 382px; height: 44px; border: 0; border-radius: 4px; color: #fff; font: inherit; font-size: 15px; cursor: pointer; }
+    #ofReset { left: 24px; width: 124px; background: #565d6a; }
+    #ofGo { left: 158px; width: 308px; background: #dd3c44; }
+    #ofGo.sell { background: #1375ec; }
+    .of-toast { left: 50%; bottom: 70px; transform: translateX(-50%); padding: 8px 14px; border-radius: 4px; background: rgba(0, 0, 0, .85); color: #fff; font-size: 12px; white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; }
+    .of-toast.show { opacity: 1; }
+    .of-gap { height: 50px; }
+    .dpt { height: 328px; background: #0c1727; }
+    #depth { display: block; width: 490px; height: 283px; }
   </style>
 </head>
 <body>
@@ -174,6 +252,7 @@
     <span class="status" id="status"></span>
   </div>
   <div class="stage">
+    <div class="leftcol">
     <div class="trade">
       <div class="upbit-head">
         <div class="titB">
@@ -263,6 +342,54 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="halfB">
+      <section class="obk">
+        <div class="ob-head">
+          <div class="ob-tabs" id="obTabs"><a class="on">일반호가</a><a>누적호가</a><a>호가주문</a></div>
+          <div class="ob-filter">모아보기</div>
+        </div>
+        <div class="ob-scroll" id="obScroll">
+          <div class="ob-asks"><div id="obAskRows"></div><div class="ob-info" id="obInfo"></div></div>
+          <div class="ob-bids"><div id="obBidRows"></div>
+            <div class="ob-trd">
+              <dl><dt>체결강도</dt><dd id="obStrength">-</dd></dl>
+              <table><thead><tr><th>체결가</th><th>체결량</th></tr></thead><tbody id="obTrades"></tbody></table>
+            </div>
+          </div>
+        </div>
+        <div class="ob-total"><span></span><span class="ra" id="obTotAsk">-</span><span class="mid">수량<i id="obTotSym"></i></span><span class="la" id="obTotBid">-</span><span></span></div>
+      </section>
+      <section class="ordB">
+        <div class="ofm">
+          <div class="of-tabs" id="ofTabs"><a class="buy on" data-side="buy">매수</a><a data-side="sell">매도</a><a>간편주문</a><a>거래내역</a></div>
+          <div class="of-body">
+            <span class="of-lab" style="top:30px">주문유형</span>
+            <div class="of-radio" id="ofType"><span class="on">지정가</span><span>시장가</span><span>예약-지정가</span></div>
+            <span class="of-lab" style="top:72px">주문가능</span>
+            <span class="of-avail">0<small id="ofAvailUnit">KRW</small></span>
+            <span class="of-lab" style="top:134px"><b id="ofPriceLab" style="font-weight:400">매수가격</b><small class="ofQuote">(KRW)</small></span>
+            <input class="of-in" id="ofPrice" style="top:125px" inputmode="decimal" />
+            <button class="of-step" id="ofMinus" style="left:405px">−</button>
+            <button class="of-step" id="ofPlus" style="left:433px">+</button>
+            <span class="of-lab" style="top:186px">주문수량<small id="ofSym">(XRP)</small></span>
+            <input class="of-in" id="ofQty" style="top:177px" value="0" inputmode="decimal" />
+            <div class="of-pct" id="ofPct"><a>10%</a><a>25%</a><a>50%</a><a>100%</a><a>직접입력</a></div>
+            <span class="of-lab" style="top:272px">주문총액<small class="ofQuote">(KRW)</small></span>
+            <input class="of-in" id="ofTotal" style="top:263px" value="0" inputmode="decimal" />
+            <span class="of-note">• 최소주문금액: 5,000 KRW &nbsp; • 수수료(부가세 포함): 0.05%</span>
+            <button class="of-btn" id="ofReset">초기화</button>
+            <button class="of-btn" id="ofGo">매수</button>
+            <div class="of-toast" id="ofToast">화면용 주문창이라 실제 주문은 되지 않습니다</div>
+          </div>
+        </div>
+        <div class="of-gap"></div>
+        <div class="dpt">
+          <div class="dp-tabs" id="dpTabs"><a class="on" data-k="depth">마켓뎁스</a><a data-k="mini">미니차트</a></div>
+          <canvas id="depth" width="490" height="283"></canvas>
+        </div>
+      </section>
+    </div>
     </div>
     <aside class="mkts">
       <div class="mkts-top">
@@ -389,6 +516,9 @@ function paintQuote(last, prev) {
   $("headVol").innerHTML = headQty(live ? tick.vol : last.volume, sym);
   $("headAmt").innerHTML = headQty(live ? tick.amount : last.close * last.volume, quote);
   if (sym + "|" + quoteDay() !== exKey) loadExchanges(sym, quoteDay());
+  if (typeof obOnQuote === "function") obOnQuote(code, px, base, live
+    ? { hi: tick.high, lo: tick.low, vol: tick.vol, amt: tick.amount }
+    : { hi: last.high, lo: last.low, vol: last.volume, amt: last.close * last.volume });
 }
 function fmt(n) {
   if (n == null || !Number.isFinite(n)) return "-";
@@ -1753,6 +1883,343 @@ $("mktList").onclick = e => {
   $("market").value = row.dataset.m;
   $("apply").click();
 };
+
+// ── 호가창 · 주문창 ──
+// 오늘 시세: 업비트 웹소켓(실시간 호가·체결·현재가). 과거 날짜·리플레이: 그 시점 가격을 중심으로 만든 가상 호가.
+const OB_ROWS = 30, OB_ROW_H = 45, OB_MID = 404;
+const ob = { mode: "", market: "", asks: [], bids: [], tAsk: 0, tBid: 0, px: 0, prev: 0, stats: null, y52: null, y52key: "",
+  trades: [], strength: null, sim: null, simKey: "", ws: null, centered: "", dirty: false };
+let obSide = "buy", ofTouched = false, depthTab = "depth", headAt = 0;
+const q3 = n => Number.isFinite(n) ? n.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : "-";
+const q0 = n => Number.isFinite(n) ? Math.round(n).toLocaleString("en-US") : "-";
+const pctOf = (p, base) => base ? (p - base) / base * 100 : 0;
+const signCls = v => v > 0 ? "up" : v < 0 ? "down" : "";
+const dotDate = d => d ? "(" + String(d).slice(0, 10).replace(/-/g, ".") + ")" : "";
+
+function obOnQuote(code, px, prev, stats) {
+  const live = isLiveList();
+  const mode = live ? "live" : "sim";
+  if (mode !== ob.mode || code !== ob.market) obReset(code, mode);
+  if (px > 0) ob.px = px;
+  if (prev > 0) ob.prev = prev;
+  if (stats) ob.stats = stats;
+  if (mode === "sim") {
+    const key = code + "|" + quoteDay();
+    if (key !== ob.simKey) { ob.simKey = key; ob.sim = null; ob.trades = []; load52(code); }
+    simStep(false);
+  }
+  obPaintSoon();
+}
+function obReset(code, mode) {
+  if (code !== ob.market) { ob.centered = ""; ofTouched = false; }
+  Object.assign(ob, { mode, market: code, asks: [], bids: [], tAsk: 0, tBid: 0, trades: [], strength: null, sim: null, simKey: "", y52: null, stats: null });
+  obDisconnect();
+  if (mode === "live") { obConnect(code); obLoadTicks(code); }
+}
+function obConnect(code) {
+  const ws = new WebSocket("wss://api.upbit.com/websocket/v1");
+  ws.binaryType = "arraybuffer";
+  ob.ws = ws;
+  ws.onopen = () => ws.send(JSON.stringify([{ ticket: "replay-" + Date.now() },
+    { type: "ticker", codes: [code] }, { type: "orderbook", codes: [code] }, { type: "trade", codes: [code] }]));
+  ws.onmessage = ev => {
+    if (ob.ws !== ws) return;
+    const m = JSON.parse(typeof ev.data === "string" ? ev.data : new TextDecoder().decode(ev.data));
+    if (m.code !== ob.market) return;
+    if (m.type === "orderbook") {
+      ob.asks = m.orderbook_units.map(u => ({ p: u.ask_price, s: u.ask_size }));
+      ob.bids = m.orderbook_units.map(u => ({ p: u.bid_price, s: u.bid_size }));
+      ob.tAsk = m.total_ask_size; ob.tBid = m.total_bid_size;
+    } else if (m.type === "trade") {
+      if (!ob.trades.some(t => t.id === m.sequential_id)) {
+        ob.trades.unshift({ p: m.trade_price, s: m.trade_volume, side: m.ask_bid, id: m.sequential_id, ts: m.trade_timestamp });
+        ob.trades.length = Math.min(ob.trades.length, 40);
+      }
+      ob.px = m.trade_price;
+    } else if (m.type === "ticker") {
+      ob.px = m.trade_price; ob.prev = m.prev_closing_price;
+      ob.strength = m.acc_ask_volume > 0 ? m.acc_bid_volume / m.acc_ask_volume * 100 : null;
+      ob.stats = { hi: m.high_price, lo: m.low_price, vol: m.acc_trade_volume_24h, amt: m.acc_trade_price_24h };
+      ob.y52 = { hi: m.highest_52_week_price, hiD: m.highest_52_week_date, lo: m.lowest_52_week_price, loD: m.lowest_52_week_date };
+      liveHead(m);
+    }
+    obPaintSoon();
+  };
+  ws.onclose = () => {
+    if (ob.ws !== ws) return;
+    ob.ws = null;
+    setTimeout(() => { if (ob.mode === "live" && !ob.ws && ob.market === code) obConnect(code); }, 3000);
+  };
+}
+function obDisconnect() {
+  const ws = ob.ws;
+  ob.ws = null;
+  if (ws) try { ws.close(); } catch (e) {}
+}
+async function obLoadTicks(code) {
+  try {
+    const rows = await (await apiFetch("/trades/ticks?market=" + code + "&count=40")).json();
+    if (ob.market !== code || ob.mode !== "live") return;
+    for (const r of rows) {
+      if (!ob.trades.some(t => t.id === r.sequential_id)) ob.trades.push({ p: r.trade_price, s: r.trade_volume, side: r.ask_bid, id: r.sequential_id, ts: r.timestamp });
+    }
+    ob.trades.sort((a, b) => b.ts - a.ts);
+    ob.trades.length = Math.min(ob.trades.length, 40);
+    obPaintSoon();
+  } catch (e) {}
+}
+function liveHead(m) {
+  tickerMap[m.code] = { price: m.trade_price, open: m.opening_price, high: m.high_price, low: m.low_price,
+    chg: m.signed_change_rate * 100, amount: m.acc_trade_price_24h, vol: m.acc_trade_volume_24h, prevClose: m.prev_closing_price };
+  const now = Date.now();
+  if (now - headAt < 1000 || !view.length || !isLiveList()) return;
+  headAt = now;
+  const last = view[view.length - 1];
+  paintQuote(last, view.length > 1 ? view[view.length - 2].close : last.open);
+}
+async function load52(code) {
+  const day = quoteDay(), key = code + "|" + day;
+  ob.y52key = key;
+  try {
+    const to = new Date(Date.parse(day + "T00:00:00+09:00") + 86400000).toISOString().slice(0, 19);
+    let rows = await (await apiFetch("/candles/days?market=" + code + "&count=200&to=" + encodeURIComponent(to))).json();
+    if (rows.length === 200) {
+      const more = await (await apiFetch("/candles/days?market=" + code + "&count=165&to=" + encodeURIComponent(rows[199].candle_date_time_utc))).json();
+      rows = rows.concat(more);
+    }
+    if (ob.y52key !== key || ob.mode !== "sim") return;
+    let hi = null, lo = null;
+    for (const r of rows.slice(0, 365)) {
+      if (!hi || r.high_price > hi.p) hi = { p: r.high_price, d: r.candle_date_time_kst };
+      if (!lo || r.low_price < lo.p) lo = { p: r.low_price, d: r.candle_date_time_kst };
+    }
+    if (hi) ob.y52 = { hi: hi.p, hiD: hi.d, lo: lo.p, loD: lo.d };
+    obPaintSoon();
+  } catch (e) {}
+}
+
+// 가상 호가: 가격대별 잔량을 기억해 두고 조금씩 바꿔서 자연스럽게 움직이게 한다.
+function simBase() {
+  if ((playing || replayHold) && minuteBars.length) {
+    let v = 0;
+    for (const b of minuteBars) v += b.volume;
+    return v / minuteBars.length;
+  }
+  const last = view[view.length - 1];
+  const mins = { "minutes/60": 60, "minutes/240": 240, days: 1440, weeks: 10080, months: 43800 }[unit] || 1440;
+  return last ? last.volume / mins : 1;
+}
+function simSize(base) {
+  const r = Math.random();
+  return base * (0.3 + r * r * 4) * (Math.random() < 0.06 ? 6 : 1);
+}
+function simStep(move) {
+  if (!(ob.px > 0)) return;
+  let s = ob.sim;
+  if (!s) {
+    s = ob.sim = { sizes: new Map(), base: Math.max(simBase(), 1e-8), lastPx: ob.px, strength: 85 + Math.random() * 40 };
+    const t = tickOf(ob.px);
+    for (let i = 0; i < 25; i++) ob.trades.push({ p: snapTick(ob.px + Math.round((Math.random() - 0.5) * 4) * t), s: s.base * (0.02 + Math.random() * 0.8), side: Math.random() < 0.5 ? "BID" : "ASK" });
+  }
+  if (move) {
+    for (const [k, v] of s.sizes) if (Math.random() < 0.2) s.sizes.set(k, v * (0.6 + Math.random() * 0.8));
+    if (Math.random() < 0.7) {
+      const side = ob.px > s.lastPx ? "BID" : ob.px < s.lastPx ? "ASK" : (Math.random() < 0.5 ? "BID" : "ASK");
+      ob.trades.unshift({ p: ob.px, s: s.base * (0.02 + Math.random() * 0.8), side });
+      ob.trades.length = Math.min(ob.trades.length, 40);
+      s.strength = Math.min(250, Math.max(40, s.strength + (side === "BID" ? 1 : -1) * Math.random() * 1.5));
+    }
+  }
+  s.lastPx = ob.px;
+  ob.strength = s.strength;
+  const t = tickOf(ob.px), bestBid = snapTick(ob.px);
+  const size = p => {
+    const k = String(p);
+    if (!s.sizes.has(k)) s.sizes.set(k, simSize(s.base));
+    return s.sizes.get(k);
+  };
+  ob.asks = []; ob.bids = [];
+  for (let i = 0; i < OB_ROWS; i++) {
+    const ap = snapTick(bestBid + (i + 1) * t), bp = snapTick(bestBid - i * t);
+    ob.asks.push({ p: ap, s: size(ap) });
+    if (bp > 0) ob.bids.push({ p: bp, s: size(bp) });
+  }
+  ob.tAsk = ob.asks.reduce((a, u) => a + u.s, 0);
+  ob.tBid = ob.bids.reduce((a, u) => a + u.s, 0);
+  if (s.sizes.size > 600) s.sizes.clear();
+}
+setInterval(() => { if (ob.mode === "sim" && playing) { simStep(true); obPaintSoon(); } }, 500);
+
+function obPaintSoon() {
+  if (ob.dirty) return;
+  ob.dirty = true;
+  setTimeout(obPaint, 150);
+}
+function obPaint() {
+  ob.dirty = false;
+  const quote = ob.market.split("-")[0] || "KRW", sym = ob.market.split("-")[1] || "";
+  const asks = ob.asks.slice(0, OB_ROWS).reverse(), bids = ob.bids.slice(0, OB_ROWS);
+  let max = 1e-12;
+  for (const u of asks.concat(bids)) max = Math.max(max, u.s);
+  const pxCell = p => {
+    const pc = pctOf(p, ob.prev);
+    return '<div class="ob-px ' + signCls(pc) + (p === ob.px ? " cur" : "") + '" data-p="' + p + '"><b>' + headNum(p) + "</b><i>" + (pc > 0 ? "+" : "") + pc.toFixed(2) + "%</i></div>";
+  };
+  const qty = u => '<div class="ob-qty"><em class="ob-bar" style="width:' + (u.s / max * 111).toFixed(1) + 'px"></em><span>' + q3(u.s) + "</span></div>";
+  const blank = '<div class="ob-row"></div>';
+  $("obAskRows").innerHTML = blank.repeat(OB_ROWS - asks.length) + asks.map(u => '<div class="ob-row"><div></div>' + qty(u) + pxCell(u.p) + "</div>").join("");
+  $("obBidRows").innerHTML = bids.map(u => '<div class="ob-row">' + pxCell(u.p) + qty(u) + "<div></div></div>").join("") + blank.repeat(OB_ROWS - bids.length);
+
+  const st = ob.stats || {}, y = ob.y52 || {};
+  const amt = !Number.isFinite(st.amt) ? "-" : quote === "KRW" ? q0(st.amt / 1e6) + " <i>백만원</i>" : q3(st.amt) + " <i>" + quote + "</i>";
+  const hiPc = pctOf(st.hi, ob.prev), loPc = pctOf(st.lo, ob.prev);
+  $("obInfo").innerHTML =
+    '<dl><div class="r"><dt>거래량</dt><dd>' + q0(st.vol) + " <i>" + sym + '</i></dd></div>' +
+    '<div class="r"><dt>거래대금</dt><dd>' + amt + "<em>(최근24시간)</em></dd></div></dl>" +
+    '<dl><div class="r"><dt>52주 최고</dt><dd class="up">' + headNum(y.hi) + "<em>" + dotDate(y.hiD) + "</em></dd></div>" +
+    '<div class="r"><dt>52주 최저</dt><dd class="down">' + headNum(y.lo) + "<em>" + dotDate(y.loD) + "</em></dd></div></dl>" +
+    '<dl><div class="r"><dt>전일종가</dt><dd>' + headNum(ob.prev) + "</dd></div>" +
+    '<div class="r"><dt>당일고가</dt><dd class="' + signCls(hiPc) + '">' + headNum(st.hi) + '<em class="' + signCls(hiPc) + '">' + (hiPc > 0 ? "+" : "") + hiPc.toFixed(2) + "%</em></dd></div>" +
+    '<div class="r"><dt>당일저가</dt><dd class="' + signCls(loPc) + '">' + headNum(st.lo) + '<em class="' + signCls(loPc) + '">' + (loPc > 0 ? "+" : "") + loPc.toFixed(2) + "%</em></dd></div></dl>";
+  $("obStrength").textContent = ob.strength == null ? "-" : "+" + ob.strength.toFixed(2) + "%";
+  $("obTrades").innerHTML = ob.trades.slice(0, 19).map(t =>
+    "<tr><td>" + headNum(t.p) + '</td><td class="' + (t.side === "BID" ? "up" : "down") + '">' + q3(t.s) + "</td></tr>").join("");
+  $("obTotAsk").textContent = q3(ob.tAsk);
+  $("obTotBid").textContent = q3(ob.tBid);
+  $("obTotSym").textContent = "(" + sym + ")";
+
+  const sc = $("obScroll");
+  if (ob.centered !== ob.market && asks.length) { sc.scrollTop = OB_ROWS * OB_ROW_H - OB_MID; ob.centered = ob.market; }
+  ofSync(quote, sym);
+  drawDepth();
+}
+
+// 주문창 (화면용: 실제 주문은 하지 않는다)
+const numIn = id => +String($(id).value).replace(/,/g, "") || 0;
+function ofSync(quote, sym) {
+  document.querySelectorAll(".ofQuote").forEach(el => el.textContent = "(" + quote + ")");
+  $("ofSym").textContent = "(" + sym + ")";
+  $("ofAvailUnit").textContent = obSide === "buy" ? quote : sym;
+  if (!ofTouched && ob.px > 0 && document.activeElement !== $("ofPrice")) $("ofPrice").value = headNum(ob.px);
+}
+function ofTotal() {
+  const total = numIn("ofPrice") * numIn("ofQty");
+  $("ofTotal").value = total ? Math.round(total).toLocaleString("en-US") : "0";
+}
+$("ofTabs").onclick = e => {
+  const a = e.target.closest("a"); if (!a) return;
+  document.querySelectorAll("#ofTabs a").forEach(x => x.classList.toggle("on", x === a));
+  if (!a.dataset.side) return;
+  obSide = a.dataset.side;
+  const buy = obSide === "buy";
+  $("ofPriceLab").textContent = buy ? "매수가격" : "매도가격";
+  $("ofGo").textContent = buy ? "매수" : "매도";
+  $("ofGo").classList.toggle("sell", !buy);
+  obPaintSoon();
+};
+$("ofType").onclick = e => {
+  const s = e.target.closest("span"); if (!s) return;
+  document.querySelectorAll("#ofType span").forEach(x => x.classList.toggle("on", x === s));
+};
+$("ofPrice").oninput = () => { ofTouched = true; ofTotal(); };
+$("ofQty").oninput = ofTotal;
+$("ofTotal").oninput = () => {
+  const p = numIn("ofPrice");
+  $("ofQty").value = p ? +(numIn("ofTotal") / p).toFixed(8) : 0;
+};
+const ofStep = dir => () => {
+  const p = numIn("ofPrice") || ob.px;
+  $("ofPrice").value = headNum(Math.max(0, snapTick(p + dir * tickOf(p))));
+  ofTouched = true;
+  ofTotal();
+};
+$("ofMinus").onclick = ofStep(-1);
+$("ofPlus").onclick = ofStep(1);
+$("ofPct").onclick = () => { $("ofQty").value = "0"; ofTotal(); };
+$("ofReset").onclick = () => { ofTouched = false; $("ofQty").value = "0"; $("ofTotal").value = "0"; obPaint(); };
+$("ofGo").onclick = () => {
+  const t = $("ofToast");
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 1800);
+};
+$("obScroll").onclick = e => {
+  const c = e.target.closest(".ob-px"); if (!c) return;
+  $("ofPrice").value = headNum(+c.dataset.p);
+  ofTouched = true;
+  ofTotal();
+};
+$("obTabs").onclick = e => {
+  const a = e.target.closest("a"); if (!a) return;
+  document.querySelectorAll("#obTabs a").forEach(x => x.classList.toggle("on", x === a));
+};
+$("dpTabs").onclick = e => {
+  const a = e.target.closest("a"); if (!a) return;
+  document.querySelectorAll("#dpTabs a").forEach(x => x.classList.toggle("on", x === a));
+  depthTab = a.dataset.k;
+  drawDepth();
+};
+
+// 마켓뎁스: 가격대별 누적 잔량 (왼쪽 매수 빨강, 오른쪽 매도 파랑) / 미니차트: 최근 종가 선
+function drawDepth() {
+  const c = $("depth");
+  const dpr = window.devicePixelRatio || 1, w = 490, h = 283;
+  c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+  const g = c.getContext("2d");
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.clearRect(0, 0, w, h);
+  g.font = "11px Roboto, sans-serif";
+  g.lineWidth = 1;
+  const L = 59, R = w - 10, T = 10, B = h - 42;
+  const kfmt = v => v >= 1e6 ? (v / 1e6).toFixed(1) + "M" : v >= 1e3 ? Math.round(v / 1e3).toLocaleString("en-US") + "k" : v.toFixed(v >= 10 ? 0 : 2);
+  const grid = (lo, hi, Y, label) => {
+    g.strokeStyle = "#1a2434"; g.fillStyle = "#8e929b"; g.textAlign = "right";
+    for (let i = 0; i <= 5; i++) {
+      const v = lo + (hi - lo) / 5 * i, yy = Math.round(Y(v)) + 0.5;
+      g.beginPath(); g.moveTo(L, yy); g.lineTo(R, yy); g.stroke();
+      g.fillText(label(v), L - 6, yy + 4);
+    }
+  };
+  if (depthTab === "mini") {
+    const pts = view.slice(-120).map(p => p.close);
+    if (pts.length < 2) return;
+    const lo = Math.min(...pts), hi = Math.max(...pts), pad = (hi - lo) * 0.08 || hi * 0.01;
+    const Y = v => B - (v - (lo - pad)) / ((hi + pad) - (lo - pad)) * (B - T);
+    const X = i => L + i / (pts.length - 1) * (R - L);
+    grid(lo - pad, hi + pad, Y, v => headNum(v));
+    g.beginPath();
+    pts.forEach((v, i) => i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v)));
+    g.strokeStyle = pts[pts.length - 1] >= pts[0] ? "#dd3c44" : "#1375ec";
+    g.lineWidth = 1.5;
+    g.stroke();
+    return;
+  }
+  const bids = ob.bids.slice(0, OB_ROWS), asks = ob.asks.slice(0, OB_ROWS);
+  if (!bids.length || !asks.length) return;
+  let cb = 0, ca = 0;
+  const bp = bids.map(u => ({ p: u.p, c: (cb += u.s) }));
+  const ap = asks.map(u => ({ p: u.p, c: (ca += u.s) }));
+  const lo = bp[bp.length - 1].p, hi = ap[ap.length - 1].p, top = Math.max(cb, ca) * 1.05;
+  const X = p => L + (p - lo) / (hi - lo || 1) * (R - L), Y = v => B - v / top * (B - T);
+  grid(0, top, Y, kfmt);
+  g.textAlign = "center";
+  for (let i = 0; i <= 8; i++) {
+    const p = lo + (hi - lo) / 8 * i;
+    g.fillText(fmt(p), X(p), h - 20);
+  }
+  const area = (pts, fill, stroke) => {
+    g.beginPath();
+    g.moveTo(X(pts[0].p), B);
+    let yy = B;
+    for (const q of pts) { g.lineTo(X(q.p), yy); yy = Y(q.c); g.lineTo(X(q.p), yy); }
+    g.lineTo(X(pts[pts.length - 1].p), B);
+    g.closePath();
+    g.fillStyle = fill; g.fill();
+    g.strokeStyle = stroke; g.lineWidth = 1.5; g.stroke();
+  };
+  area(bp, "rgba(221, 60, 68, .25)", "#dd3c44");
+  area(ap, "rgba(19, 117, 236, .25)", "#1375ec");
+}
 
 new ResizeObserver(resize).observe(canvas);
 (async () => {
