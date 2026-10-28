@@ -258,7 +258,41 @@
     #ofReset { left: 24px; width: 124px; background: #565d6a; }
     #ofGo { left: 158px; width: 308px; background: #dd3c44; }
     #ofGo.sell { background: #1375ec; }
-    .of-toast { left: 50%; bottom: 70px; transform: translateX(-50%); padding: 8px 14px; border-radius: 4px; background: rgba(0, 0, 0, .85); color: #fff; font-size: 12px; white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; }
+    .of-in:disabled { background: #0f1c2d; color: #565d6a; }
+    .of-in::placeholder { color: #8e929b; }
+    .of-mode { top: 356px; left: 24px; font-size: 11px; color: #8e929b; }
+    .of-mode b { color: #0062df; font-weight: 400; }
+    /* 모의투자 거래내역 탭 */
+    .of-hist { position: absolute; left: 0; right: 0; top: 45px; height: 440px; display: none; overflow-y: auto; scrollbar-width: none; font-size: 12px; }
+    .of-hist::-webkit-scrollbar { display: none; }
+    .of-hist.open { display: block; }
+    .ph-title { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px 6px; color: #8e929b; }
+    .of-hist button { padding: 3px 8px; border: 1px solid #313b4b; border-radius: 4px; background: none; color: #d6d8db; font: inherit; font-size: 11px; cursor: pointer; }
+    .of-hist button:hover { border-color: #565d6a; }
+    .ph-sum { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin: 0; padding: 4px 24px 12px; border-bottom: 1px solid #1e2939; }
+    .ph-sum > div, .hold-sum > div { display: flex; justify-content: space-between; }
+    .ph-sum dt, .hold-sum dt { color: #8e929b; }
+    .ph-sum dd, .hold-sum dd { margin: 0; font-weight: 500; }
+    .ph-row { display: grid; grid-template-columns: 76px 1fr 104px 84px; align-items: center; min-height: 38px; padding: 4px 24px; border-top: 1px solid #141f30; }
+    .ph-row .tm { color: #8e929b; font-size: 11px; }
+    .ph-row .nm b { font-weight: 500; }
+    .ph-row i { display: block; font-style: normal; color: #8e929b; font-size: 11px; }
+    .ph-row .nm i.k { display: inline; margin-left: 4px; }
+    .ph-row .r { text-align: right; }
+    .ph-empty { padding: 8px 24px 14px; color: #565d6a; }
+    .of-hist .up, .hold-sum .up, .hrow .up { color: #dd3c44; } .of-hist .down, .hold-sum .down, .hrow .down { color: #1375ec; }
+    /* 시세표 보유 탭 */
+    .mkts-head.hold span::after { display: none; }
+    .hold-sum { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; margin: 0; padding: 12px 14px; border-top: 1px solid #1a2434; font-size: 12px; }
+    .hrow { display: grid; grid-template-columns: 146px 88px 78px 88px; align-items: start; height: 45px; border-top: 1px solid #1a2434; cursor: pointer; font-size: 12px; }
+    .hrow:hover, .hrow.on { background: #0d192a; }
+    .hrow .nm { padding: 6px 0 0 14px; line-height: 16px; white-space: nowrap; overflow: hidden; }
+    .hrow .nm strong { font-weight: 500; color: #d6d8db; }
+    .hrow .sym { color: #8e929b; font-size: 11px; line-height: 14px; margin-top: 1px; }
+    .hrow .v { padding: 6px 8px 0 0; text-align: right; line-height: 16px; white-space: nowrap; overflow: hidden; }
+    .hrow .v i { display: block; margin-top: 1px; font-style: normal; color: #8e929b; font-size: 11px; line-height: 14px; }
+    .hold-empty { padding: 40px 14px; text-align: center; color: #8e929b; line-height: 1.6; }
+    .of-toast { position: absolute; z-index: 5; left: 50%; bottom: 70px; transform: translateX(-50%); padding: 8px 14px; border-radius: 4px; background: rgba(0, 0, 0, .85); color: #fff; font-size: 12px; white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; }
     .of-toast.show { opacity: 1; }
     .of-gap { height: 50px; }
     .dpt { height: 328px; background: #0c1727; }
@@ -414,12 +448,12 @@
       </section>
       <section class="ordB">
         <div class="ofm">
-          <div class="of-tabs" id="ofTabs"><a class="buy on" data-side="buy">매수</a><a data-side="sell">매도</a><a>간편주문</a><a>거래내역</a></div>
-          <div class="of-body">
+          <div class="of-tabs" id="ofTabs"><a class="buy on" data-side="buy">매수</a><a data-side="sell">매도</a><a data-panel="easy">간편주문</a><a data-panel="hist">거래내역</a></div>
+          <div class="of-body" id="ofBody">
             <span class="of-lab" style="top:30px">주문유형</span>
             <div class="of-radio" id="ofType"><span class="on">지정가</span><span>시장가</span><span>예약-지정가</span></div>
             <span class="of-lab" style="top:72px">주문가능</span>
-            <span class="of-avail">0<small id="ofAvailUnit">KRW</small></span>
+            <span class="of-avail"><b id="ofAvail">0</b><small id="ofAvailUnit">KRW</small></span>
             <span class="of-lab" style="top:134px"><b id="ofPriceLab" style="font-weight:400">매수가격</b><small class="ofQuote">(KRW)</small></span>
             <input class="of-in" id="ofPrice" style="top:125px" inputmode="decimal" />
             <button class="of-step" id="ofMinus" style="left:405px">−</button>
@@ -430,10 +464,12 @@
             <span class="of-lab" style="top:272px">주문총액<small class="ofQuote">(KRW)</small></span>
             <input class="of-in" id="ofTotal" style="top:263px" value="0" inputmode="decimal" />
             <span class="of-note">• 최소주문금액: 5,000 KRW &nbsp; • 수수료(부가세 포함): 0.05%</span>
+            <span class="of-mode" id="ofMode"></span>
             <button class="of-btn" id="ofReset">초기화</button>
             <button class="of-btn" id="ofGo">매수</button>
-            <div class="of-toast" id="ofToast">화면용 주문창이라 실제 주문은 되지 않습니다</div>
           </div>
+          <div class="of-hist" id="ofHist"></div>
+          <div class="of-toast" id="ofToast"></div>
         </div>
         <div class="of-gap"></div>
         <div class="dpt">
@@ -452,7 +488,7 @@
         <span><a class="on" data-quote="KRW" href="#">원화</a></span>
         <span><a data-quote="BTC" href="#">BTC</a></span>
         <span><a data-quote="USDT" href="#">USDT</a></span>
-        <span><a href="#">보유</a></span>
+        <span><a data-view="hold" href="#">보유</a></span>
         <span><a href="#">관심</a></span>
       </div>
       <div class="mkts-head" id="mktHead">
@@ -1065,6 +1101,16 @@ function draw() {
     ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.setLineDash([1, 1]);
     ctx.beginPath(); ctx.moveTo(padL, Math.round(ly) + 0.5); ctx.lineTo(w-padR, Math.round(ly) + 0.5); ctx.stroke();
     ctx.setLineDash([]);
+    // 모의투자로 보유 중이면 평균 매수가 점선
+    const avgPx = typeof paperAvg === "function" ? paperAvg(marketCode($("market").value)) : 0;
+    if (avgPx > 0 && avgPx >= pMin && avgPx <= pMax) {
+      const ay = Math.round(yP(avgPx)) + 0.5;
+      ctx.strokeStyle = "#e7a33e"; ctx.setLineDash([4, 3]);
+      ctx.beginPath(); ctx.moveTo(padL, ay); ctx.lineTo(w - padR, ay); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = SCALE_FONT; ctx.textAlign = "left"; ctx.textBaseline = "bottom"; ctx.fillStyle = "#e7a33e";
+      ctx.fillText("평균매수가 " + axisFmt(avgPx), padL + 6, ay - 3);
+    }
     // 업비트: 눈금 칸 왼쪽 끝에 붙은 높이 17 상자, 오른쪽 모서리만 둥글게, 글자는 왼쪽에서 8px
     const scaleTag = (text, y) => {
       ctx.font = SCALE_FONT;
@@ -1665,6 +1711,7 @@ function renderMarkets() {
   const at = listMoment();
   const day = kstParts(at).date;
   if (day !== listDay) { scheduleList(); return; }
+  if (listView === "hold") { renderHoldings(); return; }
   const q = mktQuery.trim().toLowerCase();
   const active = marketCode($("market").value);
   const rows = [];
@@ -1992,11 +2039,19 @@ setInterval(() => {
   loadTickers(targets).then(() => { if (isLiveList()) renderMarkets(); });
 }, 5000);
 $("mktQ").addEventListener("input", () => { mktQuery = $("mktQ").value; renderMarkets(); });
+// "보유" 탭은 모의투자 보유 코인 목록 (시세는 원화 마켓 그대로 받아 평가에 쓴다)
+const HEAD_QUOTE = $("mktHead").innerHTML;
+const HEAD_HOLD = "<span>보유코인</span><span>보유(평가금)</span><span>매수평균가</span><span>수익률</span>";
 $("mktTabs").onclick = e => {
-  const b = e.target.closest("a"); if (!b || !b.dataset.quote) return;
+  const b = e.target.closest("a"); if (!b) return;
   e.preventDefault();
-  quoteTab = b.dataset.quote;
+  if (!b.dataset.quote && !b.dataset.view) return;
   $("mktTabs").querySelectorAll("a").forEach(x => x.classList.toggle("on", x === b));
+  listView = b.dataset.view === "hold" ? "hold" : "quote";
+  $("mktHead").innerHTML = listView === "hold" ? HEAD_HOLD : HEAD_QUOTE;
+  $("mktHead").classList.toggle("hold", listView === "hold");
+  if (listView === "hold") { renderMarkets(); return; }
+  quoteTab = b.dataset.quote;
   scheduleList();
 };
 $("mktHead").onclick = e => {
@@ -2006,7 +2061,7 @@ $("mktHead").onclick = e => {
   renderMarkets();
 };
 $("mktList").onclick = e => {
-  const row = e.target.closest(".mrow"); if (!row) return;
+  const row = e.target.closest(".mrow, .hrow"); if (!row) return;
   $("market").value = row.dataset.m;
   $("apply").click();
 };
@@ -2220,38 +2275,205 @@ function obPaint() {
   drawDepth();
 }
 
-// 주문창 (화면용: 실제 주문은 하지 않는다)
+// ── 모의투자 ──
+// 가상 돈으로 사고파는 연습용이다. 실제 업비트 주문과는 전혀 연결되지 않는다.
+// 지갑 2개: 실시간(오늘 시세, 계속 유지) / 리플레이(과거 날짜 연습, 날짜가 바뀌면 1억 원으로 새로 시작).
+// 이 브라우저에만 저장한다 (다른 기기·브라우저와는 공유되지 않음).
+const PAPER_KEY = "upbitReplay.paper.v1", PAPER_START = 100000000, FEE = 0.0005, MIN_ORDER = 5000;
+const newWallet = day => ({ krw: PAPER_START, hold: {}, open: [], hist: [], day: day || "" });
+var paper = (() => {
+  try {
+    const s = JSON.parse(localStorage.getItem(PAPER_KEY));
+    if (s && s.live && s.replay) return s;
+  } catch (e) {}
+  return { live: newWallet(), replay: newWallet() };
+})();
+var ofType = "limit", ofPanel = "form", listView = "quote";
+function paperSave() { try { localStorage.setItem(PAPER_KEY, JSON.stringify(paper)); } catch (e) {} }
+const paperKey = () => isLiveList() ? "live" : "replay";
+function wallet() {
+  const k = paperKey();
+  if (k === "replay" && paper.replay.day !== quoteDay()) { paper.replay = newWallet(quoteDay()); paperSave(); }
+  return paper[k];
+}
+const paperNow = () => (playing || replayHold) ? replayAt : isLiveList() ? Date.now() : listMoment();
+// 코인 현재가: 보고 있는 코인은 호가창 가격, 나머지는 시세표 가격
+function paperPrice(market) {
+  if (market === ob.market && ob.px > 0) return ob.px;
+  const at = listMoment();
+  let rec = isLiveList() ? tickerMap[market] || null : quoteOf(at, hourCache[market + "|" + kstParts(at).date]);
+  rec = simRec(market, rec);
+  return rec && rec.price > 0 ? rec.price : 0;
+}
+function paperAvg(market) {
+  if (!paper) return 0;
+  const k = isLiveList() ? "live" : "replay";
+  if (k === "replay" && paper.replay.day !== quoteDay()) return 0;
+  const h = paper[k].hold[market];
+  return h && h.qty > 0 ? h.cost / h.qty : 0;
+}
+const krwFree = w => w.krw - w.open.filter(o => o.side === "buy").reduce((a, o) => a + o.price * o.qty * (1 + FEE), 0);
+const qtyFree = (w, m) => ((w.hold[m] || {}).qty || 0) - w.open.filter(o => o.side === "sell" && o.market === m).reduce((a, o) => a + o.qty, 0);
+const fmtQty = n => n.toLocaleString("en-US", { maximumFractionDigits: 8 });
+const floor8 = n => Math.floor(n * 1e8 + 1e-6) / 1e8;
+const coinName = m => (allMarkets.find(x => x.market === m) || {}).korean_name || m.split("-")[1];
+function ofToast(msg) {
+  const t = $("ofToast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+// 체결: 매수 수수료는 원화에서 따로 빠지고, 평균 매수가에는 넣지 않는다 (업비트와 같은 방식)
+function paperFill(w, market, side, price, qty, kind) {
+  const amt = price * qty, fee = amt * FEE;
+  const h = w.hold[market] || (w.hold[market] = { qty: 0, cost: 0 });
+  let pnl = null;
+  if (side === "buy") {
+    w.krw -= amt + fee;
+    h.qty += qty;
+    h.cost += amt;
+  } else {
+    const avg = h.qty ? h.cost / h.qty : 0;
+    pnl = (price - avg) * qty - fee;
+    h.cost -= avg * qty;
+    h.qty -= qty;
+    w.krw += amt - fee;
+  }
+  if (h.qty <= 1e-9) delete w.hold[market];
+  w.hist.unshift({ at: paperNow(), market, side, kind, price, qty, amt, fee, pnl });
+  if (w.hist.length > 300) w.hist.length = 300;
+  ofToast((side === "buy" ? "매수" : "매도") + " 체결 · " + coinName(market) + " " + fmtQty(qty) + "개 · " + headNum(price) + "원");
+}
+function paperOrder(side) {
+  const w = wallet(), market = ob.market;
+  if (!market.startsWith("KRW-")) return "원화 마켓만 모의투자할 수 있어요";
+  const px = paperPrice(market);
+  if (!(px > 0)) return "현재가를 아직 불러오지 못했어요";
+  const ask = ob.asks[0] ? ob.asks[0].p : px, bid = ob.bids[0] ? ob.bids[0].p : px;
+  if (ofType === "market") {
+    if (side === "buy") {
+      const total = numIn("ofTotal");
+      if (total < MIN_ORDER) return "최소 주문금액은 5,000원이에요";
+      if (total * (1 + FEE) > krwFree(w) + 1e-6) return "주문가능 금액이 부족해요";
+      paperFill(w, market, "buy", ask, floor8(total / ask), "시장가");
+    } else {
+      const qty = floor8(numIn("ofQty"));
+      if (!(qty > 0)) return "주문수량을 입력해 주세요";
+      if (qty > qtyFree(w, market) + 1e-9) return "주문가능 수량이 부족해요";
+      if (qty * bid < MIN_ORDER) return "최소 주문금액은 5,000원이에요";
+      paperFill(w, market, "sell", bid, qty, "시장가");
+    }
+  } else {
+    const price = snapTick(numIn("ofPrice")), qty = floor8(numIn("ofQty"));
+    if (!(price > 0) || !(qty > 0)) return "가격과 수량을 입력해 주세요";
+    if (price * qty < MIN_ORDER) return "최소 주문금액은 5,000원이에요";
+    const order = { id: Date.now() + "-" + Math.random().toString(36).slice(2, 7), market, side, price, qty, at: paperNow() };
+    if (side === "buy") {
+      if (price * qty * (1 + FEE) > krwFree(w) + 1e-6) return "주문가능 금액이 부족해요";
+      // 파는 호가 이상으로 사면 바로 체결(파는 호가 가격으로), 아니면 미체결로 기다린다
+      if (price >= ask) paperFill(w, market, "buy", ask, qty, "지정가");
+      else { w.open.push(order); ofToast("매수 주문 접수 · " + headNum(price) + "원이 되면 체결돼요"); }
+    } else {
+      if (qty > qtyFree(w, market) + 1e-9) return "주문가능 수량이 부족해요";
+      if (price <= bid) paperFill(w, market, "sell", bid, qty, "지정가");
+      else { w.open.push(order); ofToast("매도 주문 접수 · " + headNum(price) + "원이 되면 체결돼요"); }
+    }
+  }
+  paperSave();
+  paperRender();
+  return "";
+}
+// 미체결 지정가: 현재가가 주문 가격에 닿으면 그 가격으로 체결
+function paperMatch() {
+  const k = paperKey(), w = paper[k];
+  if (!w.open.length || (k === "replay" && w.day !== quoteDay())) return;
+  let done = false;
+  for (const o of w.open.slice()) {
+    const px = paperPrice(o.market);
+    if (!(px > 0) || (o.side === "buy" ? px > o.price : px < o.price)) continue;
+    w.open.splice(w.open.indexOf(o), 1);
+    paperFill(w, o.market, o.side, o.price, o.qty, "지정가");
+    done = true;
+  }
+  if (done) { paperSave(); paperRender(); }
+}
+setInterval(paperMatch, 1000);
+setInterval(() => { if (ofPanel === "hist") paperHist(); }, 3000);
+function paperRender() {
+  if (ob.market) ofSync(ob.market.split("-")[0], ob.market.split("-")[1]);
+  if (ofPanel === "hist") paperHist();
+  if (listView === "hold") renderMarkets();
+  draw();
+}
+function paperSummary(w) {
+  let evalKrw = 0, buyKrw = 0;
+  for (const [m, h] of Object.entries(w.hold)) {
+    evalKrw += h.qty * (paperPrice(m) || h.cost / h.qty);
+    buyKrw += h.cost;
+  }
+  return { evalKrw, buyKrw, total: w.krw + evalKrw };
+}
+const signed = (n, f) => (n > 0 ? "+" : "") + f(n);
+const pctTxt = v => { const t = v.toFixed(2); return +t === 0 ? "0.00" : (+t > 0 ? "+" : "") + t; };
+const walletLabel = w => paperKey() === "live" ? "실시간 모의투자" : "리플레이 모의투자 · " + w.day;
+
+// 주문창
 const numIn = id => +String($(id).value).replace(/,/g, "") || 0;
 function ofSync(quote, sym) {
   document.querySelectorAll(".ofQuote").forEach(el => el.textContent = "(" + quote + ")");
   $("ofSym").textContent = "(" + sym + ")";
   $("ofAvailUnit").textContent = obSide === "buy" ? quote : sym;
-  if (!ofTouched && ob.px > 0 && document.activeElement !== $("ofPrice")) $("ofPrice").value = headNum(ob.px);
+  const w = wallet();
+  $("ofAvail").textContent = obSide === "buy" ? q0(Math.max(0, krwFree(w))) : fmtQty(Math.max(0, qtyFree(w, ob.market)));
+  $("ofMode").innerHTML = "<b>●</b> " + walletLabel(w);
+  const mk = ofType === "market";
+  $("ofPrice").disabled = $("ofMinus").disabled = $("ofPlus").disabled = mk;
+  $("ofQty").disabled = mk && obSide === "buy";
+  $("ofTotal").disabled = mk && obSide === "sell";
+  $("ofPrice").placeholder = mk ? "시장가" : "";
+  if (mk) $("ofPrice").value = "";
+  else if (!ofTouched && ob.px > 0 && document.activeElement !== $("ofPrice")) $("ofPrice").value = headNum(ob.px);
 }
 function ofTotal() {
-  const total = numIn("ofPrice") * numIn("ofQty");
+  const p = ofType === "market" ? (ob.bids[0] ? ob.bids[0].p : ob.px) : numIn("ofPrice");
+  const total = p * numIn("ofQty");
   $("ofTotal").value = total ? Math.round(total).toLocaleString("en-US") : "0";
 }
 $("ofTabs").onclick = e => {
   const a = e.target.closest("a"); if (!a) return;
+  if (a.dataset.panel === "easy") { ofToast("간편주문은 모의투자에서 지원하지 않아요"); return; }
   document.querySelectorAll("#ofTabs a").forEach(x => x.classList.toggle("on", x === a));
-  if (!a.dataset.side) return;
+  ofPanel = a.dataset.panel === "hist" ? "hist" : "form";
+  $("ofBody").style.display = ofPanel === "form" ? "" : "none";
+  $("ofHist").classList.toggle("open", ofPanel === "hist");
+  if (ofPanel === "hist") { paperHist(); return; }
   obSide = a.dataset.side;
   const buy = obSide === "buy";
   $("ofPriceLab").textContent = buy ? "매수가격" : "매도가격";
   $("ofGo").textContent = buy ? "매수" : "매도";
   $("ofGo").classList.toggle("sell", !buy);
+  $("ofQty").value = "0";
+  $("ofTotal").value = "0";
   obPaintSoon();
 };
 $("ofType").onclick = e => {
   const s = e.target.closest("span"); if (!s) return;
+  const idx = [...s.parentNode.children].indexOf(s);
+  if (idx === 2) { ofToast("예약-지정가는 모의투자에서 지원하지 않아요"); return; }
+  ofType = idx === 1 ? "market" : "limit";
   document.querySelectorAll("#ofType span").forEach(x => x.classList.toggle("on", x === s));
+  ofTouched = false;
+  $("ofQty").value = "0";
+  $("ofTotal").value = "0";
+  obPaint();
 };
 $("ofPrice").oninput = () => { ofTouched = true; ofTotal(); };
 $("ofQty").oninput = ofTotal;
 $("ofTotal").oninput = () => {
+  if (ofType === "market") return;
   const p = numIn("ofPrice");
-  $("ofQty").value = p ? +(numIn("ofTotal") / p).toFixed(8) : 0;
+  $("ofQty").value = p ? floor8(numIn("ofTotal") / p) : 0;
 };
 const ofStep = dir => () => {
   const p = numIn("ofPrice") || ob.px;
@@ -2261,14 +2483,91 @@ const ofStep = dir => () => {
 };
 $("ofMinus").onclick = ofStep(-1);
 $("ofPlus").onclick = ofStep(1);
-$("ofPct").onclick = () => { $("ofQty").value = "0"; ofTotal(); };
+// 10%·25%·50%·100%: 매수는 주문가능 원화(수수료 포함) 기준, 매도는 주문가능 수량 기준
+$("ofPct").onclick = e => {
+  const a = e.target.closest("a"); if (!a) return;
+  const pct = parseFloat(a.textContent);
+  const mkBuy = ofType === "market" && obSide === "buy";
+  if (!pct) { $(mkBuy ? "ofTotal" : "ofQty").focus(); return; }
+  const w = wallet(), r = pct / 100;
+  if (obSide === "buy") {
+    const krw = Math.max(0, krwFree(w)) * r / (1 + FEE);
+    if (mkBuy) { $("ofTotal").value = Math.floor(krw).toLocaleString("en-US"); return; }
+    const p = numIn("ofPrice") || ob.px;
+    if (!p) return;
+    $("ofQty").value = floor8(krw / p);
+  } else {
+    $("ofQty").value = floor8(Math.max(0, qtyFree(w, ob.market)) * r);
+  }
+  ofTotal();
+};
 $("ofReset").onclick = () => { ofTouched = false; $("ofQty").value = "0"; $("ofTotal").value = "0"; obPaint(); };
 $("ofGo").onclick = () => {
-  const t = $("ofToast");
-  t.classList.add("show");
-  clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove("show"), 1800);
+  const err = paperOrder(obSide);
+  if (err) { ofToast(err); return; }
+  $("ofQty").value = "0";
+  $("ofTotal").value = "0";
 };
+
+// 거래내역 탭: 자산 요약, 미체결(취소 가능), 체결 내역, 지갑 초기화
+function paperHist() {
+  const w = wallet(), s = paperSummary(w);
+  const pnl = s.total - PAPER_START, rate = pnl / PAPER_START * 100;
+  const t = ms => { const p = kstParts(ms); return p.date.slice(5).replace("-", ".") + " " + p.time.slice(0, 5); };
+  const sideTag = side => '<b class="' + (side === "buy" ? "up" : "down") + '">' + (side === "buy" ? "매수" : "매도") + "</b>";
+  const openRows = w.open.map(o =>
+    '<div class="ph-row"><span class="tm">' + t(o.at) + '</span><span class="nm">' + sideTag(o.side) + " " + coinName(o.market) +
+    '</span><span class="r">' + headNum(o.price) + "<i>" + fmtQty(o.qty) + '</i></span><span class="r"><button data-cancel="' + o.id + '">취소</button></span></div>').join("");
+  const fillRows = w.hist.slice(0, 100).map(f =>
+    '<div class="ph-row"><span class="tm">' + t(f.at) + '</span><span class="nm">' + sideTag(f.side) + " " + coinName(f.market) + '<i class="k">' + f.kind +
+    '</i></span><span class="r">' + headNum(f.price) + "<i>" + fmtQty(f.qty) + '</i></span><span class="r ' + signCls(f.pnl || 0) + '">' +
+    (f.pnl == null ? "<i>-</i>" : signed(f.pnl, q0) + "<i>손익</i>") + "</span></div>").join("");
+  $("ofHist").innerHTML =
+    '<div class="ph-title"><span>' + walletLabel(w) + '</span><button data-act="reset">모의투자 초기화</button></div>' +
+    '<dl class="ph-sum"><div><dt>보유 KRW</dt><dd>' + q0(w.krw) + "</dd></div><div><dt>총 보유자산</dt><dd>" + q0(s.total) + "</dd></div>" +
+    "<div><dt>총 매수</dt><dd>" + q0(s.buyKrw) + "</dd></div><div><dt>총 평가</dt><dd>" + q0(s.evalKrw) + "</dd></div>" +
+    '<div><dt>누적 손익</dt><dd class="' + signCls(pnl) + '">' + signed(pnl, q0) + '</dd></div><div><dt>누적 수익률</dt><dd class="' + signCls(pnl) + '">' + pctTxt(rate) + "%</dd></div></dl>" +
+    '<div class="ph-title"><span>미체결 ' + w.open.length + "</span></div>" + (openRows || '<div class="ph-empty">미체결 주문이 없어요</div>') +
+    '<div class="ph-title"><span>체결 ' + w.hist.length + "</span></div>" + (fillRows || '<div class="ph-empty">체결 내역이 없어요</div>');
+}
+$("ofHist").onclick = e => {
+  const c = e.target.closest("[data-cancel]");
+  if (c) {
+    const w = wallet();
+    w.open = w.open.filter(o => o.id !== c.dataset.cancel);
+    paperSave();
+    paperRender();
+    ofToast("주문을 취소했어요");
+    return;
+  }
+  if (e.target.closest('[data-act="reset"]')) {
+    const k = paperKey();
+    if (!confirm((k === "live" ? "실시간" : "리플레이") + " 모의투자를 1억 원으로 초기화할까요? 보유 코인과 내역이 모두 지워져요.")) return;
+    paper[k] = newWallet(k === "replay" ? quoteDay() : "");
+    paperSave();
+    paperRender();
+    ofToast("모의투자를 1억 원으로 초기화했어요");
+  }
+};
+
+// 시세표 "보유" 탭: 내 모의투자 코인 (보유수량·평가금, 매수평균가·매수금, 수익률·평가손익)
+function renderHoldings() {
+  const w = wallet(), s = paperSummary(w), active = marketCode($("market").value);
+  const rows = Object.entries(w.hold).map(([m, h]) => {
+    const px = paperPrice(m) || h.cost / h.qty, ev = px * h.qty, pnl = ev - h.cost, rate = h.cost ? pnl / h.cost * 100 : 0, cls = signCls(pnl);
+    return '<div class="hrow' + (m === active ? " on" : "") + '" data-m="' + m + '"><div class="nm"><strong>' + coinName(m) + '</strong><div class="sym">' + m.split("-")[1] + "/KRW</div></div>" +
+      '<div class="v">' + fmtQty(h.qty) + "<i>" + q0(ev) + " KRW</i></div>" +
+      '<div class="v">' + headNum(h.cost / h.qty) + "<i>" + q0(h.cost) + " KRW</i></div>" +
+      '<div class="v ' + cls + '">' + pctTxt(rate) + "%<i>" + signed(pnl, q0) + " KRW</i></div></div>";
+  });
+  const pnl = s.evalKrw - s.buyKrw;
+  $("mktList").innerHTML =
+    '<dl class="hold-sum"><div><dt>보유 KRW</dt><dd>' + q0(w.krw) + "</dd></div><div><dt>총 보유자산</dt><dd>" + q0(s.total) + "</dd></div>" +
+    '<div><dt>총 평가손익</dt><dd class="' + signCls(pnl) + '">' + signed(pnl, q0) + '</dd></div><div><dt>총 평가수익률</dt><dd class="' + signCls(pnl) + '">' +
+    pctTxt(s.buyKrw ? pnl / s.buyKrw * 100 : 0) + "%</dd></div></dl>" +
+    (rows.join("") || '<div class="hold-empty">보유한 코인이 없어요.<br>주문창에서 모의투자로 사 보세요.</div>');
+  $("mktNote").textContent = walletLabel(w) + " · 보유 " + rows.length + "개";
+}
 $("obScroll").onclick = e => {
   const c = e.target.closest(".ob-px"); if (!c) return;
   $("ofPrice").value = headNum(+c.dataset.p);
